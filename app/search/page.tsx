@@ -853,11 +853,25 @@ const serviceData = {
     opticians: [
       {
         name: "Nancholi Vision Center",
+        rating: 4.7,
+        address: "Nancholi Trading Center",
+        phone: "+265 997 813 198",
+        hours: "8AM-6PM",
+        services: [
+          "Comprehensive Eye Exams",
+          "Prescription Glasses",
+          "Contact Lenses",
+          "Vision Therapy",
+          "Eye Health Consultation",
+        ],
+      },
+      {
+        name: "Clear Sight Nancholi",
         rating: 4.1,
         address: "Nancholi Market",
         phone: "+265 1 772 901",
         hours: "8AM-6PM",
-        services: ["Eye Exams", "Glasses", "Vision Therapy"],
+        services: ["Eye Tests", "Reading Glasses", "Vision Therapy"],
       },
     ],
     gyms: [
