@@ -485,7 +485,7 @@ const serviceData = {
         address: "Chirimba Market",
         phone: "+265 1 702 123",
         hours: "9AM-5PM",
-        services: ["Eye Exams", "Reading Glasses"],
+        services: ["Eye Tests", "Reading Glasses"],
       },
     ],
     gyms: [
@@ -2357,6 +2357,15 @@ export default function SearchPage() {
                                       size="sm"
                                       variant="outline"
                                       className="flex-1 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600 bg-transparent"
+                                      onClick={() => {
+                                        // Check if this is Pilirani Judo's listing
+                                        if (service.name === "Pilirani Judo - Optometrist") {
+                                          window.location.href = "/provider/pilirani-judo"
+                                        } else {
+                                          // For other providers, show a coming soon message or generic details
+                                          alert("Provider details coming soon!")
+                                        }
+                                      }}
                                     >
                                       View Details
                                     </Button>
