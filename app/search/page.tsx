@@ -852,18 +852,12 @@ const serviceData = {
     ],
     opticians: [
       {
-        name: "Nancholi Vision Center",
+        name: "Pilirani Judo - Optometrist",
         rating: 4.7,
         address: "Nancholi Trading Center",
         phone: "+265 997 813 198",
-        hours: "8AM-6PM",
-        services: [
-          "Comprehensive Eye Exams",
-          "Prescription Glasses",
-          "Contact Lenses",
-          "Vision Therapy",
-          "Eye Health Consultation",
-        ],
+        hours: "Mon-Fri: 8AM-5PM, Weekends: 8AM-1PM",
+        services: ["Eye Exams", "Contact Lenses", "Glasses", "Professional Eye Care", "Vision Consultation"],
       },
       {
         name: "Clear Sight Nancholi",
