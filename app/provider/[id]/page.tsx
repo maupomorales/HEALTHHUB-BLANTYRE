@@ -34,8 +34,8 @@ const providerData: { [key: string]: any } = {
     category: "Optometry & Vision Care",
     rating: 4.7,
     reviewCount: 28,
-    phone: "+265 997813198",
-    whatsapp: "+265 997813198",
+    phone: "+265997813198",
+    whatsapp: "+265997813198",
     address: "Nancholi CI, Blantyre City",
     area: "Nancholi",
     hours: {
@@ -84,15 +84,25 @@ export default function ProviderPage() {
     )
   }
 
+  // Function to handle phone calls
   const handleCall = () => {
-    window.open(`tel:${provider.phone}`, "_self")
+    window.location.href = `tel:${provider.phone}`
   }
 
+  // Function to handle WhatsApp chat (general)
   const handleWhatsApp = () => {
+    const phoneNumber = provider.whatsapp.replace(/[^0-9]/g, "")
     const message = encodeURIComponent(
-      `Hello Dr. ${provider.name.split(" ").pop()}, I would like to schedule an appointment for an eye examination. Thank you.`,
+      `Hello Dr. ${provider.name.split(" ").pop()}, I found your contact through Blantyre Health Hub. I would like to inquire about your eye care services.`,
     )
-    window.open(`https://wa.me/${provider.whatsapp.replace(/[^0-9]/g, "")}?text=${message}`, "_blank")
+    window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank")
+  }
+
+  // Function to handle appointment booking via WhatsApp
+  const handleBookAppointment = () => {
+    const phoneNumber = provider.whatsapp.replace(/[^0-9]/g, "")
+    const message = encodeURIComponent("I want to book an appointment")
+    window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank")
   }
 
   return (
@@ -177,9 +187,10 @@ export default function ProviderPage() {
                         Call Now
                       </Button>
                       <Button
+                        onClick={handleBookAppointment}
                         variant="outline"
                         size="lg"
-                        className="hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600 bg-transparent"
+                        className="hover:bg-green-50 hover:text-green-600 hover:border-green-600 bg-transparent"
                       >
                         <Calendar className="h-5 w-5 mr-2" />
                         Book Appointment
@@ -363,6 +374,14 @@ export default function ProviderPage() {
                     Book your appointment today for professional eye care services.
                   </p>
                   <div className="space-y-3">
+                    <Button
+                      onClick={handleBookAppointment}
+                      variant="secondary"
+                      className="w-full bg-green-600 text-white hover:bg-green-700"
+                    >
+                      <Calendar className="h-4 w-4 mr-2" />
+                      Book Appointment
+                    </Button>
                     <Button
                       onClick={handleWhatsApp}
                       variant="secondary"
