@@ -41,9 +41,25 @@ export default function HomePage() {
             <Link href="#directory" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">
               Directory
             </Link>
-            <Link href="#about" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">
-              About
-            </Link>
+            <div className="relative group">
+              <button className="text-gray-600 hover:text-blue-600 transition-colors font-medium">About</button>
+              <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className="py-2">
+                  <Link
+                    href="#about"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                  >
+                    About Us
+                  </Link>
+                  <Link
+                    href="/terms"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                  >
+                    Terms & Policies
+                  </Link>
+                </div>
+              </div>
+            </div>
             <Link href="#contact" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">
               Contact
             </Link>
@@ -266,7 +282,9 @@ export default function HomePage() {
                   <li>• Ambulance services</li>
                   <li>• First aid centers</li>
                 </ul>
-                <Button className="w-full bg-red-600 hover:bg-red-700">Emergency Info</Button>
+                <Link href="/emergency">
+                  <Button className="w-full bg-red-600 hover:bg-red-700">Emergency Info</Button>
+                </Link>
               </CardContent>
             </Card>
           </div>
@@ -561,6 +579,11 @@ export default function HomePage() {
                 <li>
                   <Link href="#" className="hover:text-white transition-colors">
                     About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms" className="hover:text-white transition-colors">
+                    Terms & Conditions
                   </Link>
                 </li>
                 <li>
