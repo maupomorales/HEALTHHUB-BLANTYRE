@@ -50,7 +50,7 @@ export default function TermsPage() {
             <h1 className="text-4xl md:text-5xl font-bold">Terms and Conditions</h1>
           </div>
           <p className="text-xl mb-8 max-w-3xl mx-auto">
-            Please read these terms carefully before using Blantyre Health Hub services
+            Please read these terms carefully before using Blantyre Health Hub
           </p>
           <div className="flex items-center justify-center gap-4">
             <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-lg px-4 py-2">
@@ -78,9 +78,8 @@ export default function TermsPage() {
             </CardHeader>
             <CardContent>
               <p className="text-gray-700 leading-relaxed">
-                By accessing or using our website and service, you agree to comply with and be bound by these Terms and
-                Conditions. Please review them carefully. If you do not agree to these Terms, please do not use this
-                website.
+                By accessing or using our website, you agree to comply with and be bound by these Terms and Conditions.
+                Please review them carefully. If you do not agree to these Terms, please do not use this website.
               </p>
             </CardContent>
           </Card>
@@ -119,8 +118,8 @@ export default function TermsPage() {
             <CardContent>
               <p className="text-gray-700 leading-relaxed mb-4">
                 This Platform serves as a comprehensive health information hub providing access to various
-                health-related services, resources, and educational content. The Platform connects users with healthcare
-                information, services, and qualified healthcare providers across multiple health disciplines.
+                health-related resources and educational content. The Platform connects users with healthcare
+                information and qualified healthcare providers across multiple health disciplines.
               </p>
               <div className="bg-yellow-50 rounded-lg p-4 border-l-4 border-yellow-500 mb-4">
                 <div className="flex items-center mb-2">
@@ -139,9 +138,9 @@ export default function TermsPage() {
                   <span className="font-semibold text-red-800">Emergency Notice</span>
                 </div>
                 <p className="text-red-700 text-sm">
-                  <strong>No emergency services</strong> - the Platform is "NOT for medical emergencies". In an
-                  emergency, contact local emergency services immediately. Emergency numbers are available on the
-                  homepage for such purposes.
+                  <strong>No emergency</strong> - the Platform is "NOT for medical emergencies". In an emergency,
+                  contact local emergency immediately. Emergency numbers are available on the homepage for such
+                  purposes.
                 </p>
               </div>
             </CardContent>
@@ -189,9 +188,9 @@ export default function TermsPage() {
             <CardContent>
               <div className="space-y-4">
                 <p className="text-gray-700 leading-relaxed">
-                  All content, design, graphics, logos, and software on the Service are the property of Health Hub or
-                  its licensors, and are protected by copyright, trademark, and other intellectual property laws. You
-                  may not use our trademarks without prior written permission.
+                  All content, design, graphics, logos, and software are the property of Health Hub or its licensors,
+                  and are protected by copyright, trademark, and other intellectual property laws. You may not use our
+                  trademarks without prior written permission.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
                   Its content suppliers and is protected by international copyright laws. Users may not reproduce,
@@ -351,7 +350,7 @@ export default function TermsPage() {
               <div className="text-center">
                 <p className="text-gray-700 leading-relaxed mb-4">
                   These Terms and Conditions constitute the entire agreement between you and the Platform regarding your
-                  use of the services and supersede all prior agreements and understandings.
+                  use and supersede all prior agreements and understandings.
                 </p>
                 <div className="flex items-center justify-center gap-4">
                   <Badge variant="outline" className="text-sm px-4 py-2">
@@ -374,11 +373,11 @@ export default function TermsPage() {
                 <Image src="/logo.png" alt="Health Hub MW Logo" width={32} height={32} className="object-contain" />
                 <div>
                   <h3 className="text-lg font-bold">Blantyre Health Hub</h3>
-                  <p className="text-xs text-gray-400">Your Health Directory</p>
+                  <p className="text-xs text-gray-400">Your Health Hub</p>
                 </div>
               </div>
               <p className="text-gray-400 text-sm">
-                Connecting Blantyre residents with trusted healthcare providers and wellness services.
+                Connecting Blantyre residents with trusted healthcare providers and wellness.
               </p>
             </div>
             <div>
@@ -411,7 +410,7 @@ export default function TermsPage() {
                 </li>
                 <li>
                   <Link href="/search" className="hover:text-white transition-colors">
-                    Search Services
+                    Search
                   </Link>
                 </li>
                 <li>
