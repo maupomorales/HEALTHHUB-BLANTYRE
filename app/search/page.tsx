@@ -485,7 +485,7 @@ const serviceData = {
         address: "Chirimba Market",
         phone: "+265 1 702 123",
         hours: "9AM-5PM",
-        services: ["Eye Exams", "Reading Glasses"],
+        services: ["Eye Tests", "Reading Glasses"],
       },
     ],
     gyms: [
@@ -852,12 +852,20 @@ const serviceData = {
     ],
     opticians: [
       {
-        name: "Nancholi Vision Center",
+        name: "Pilirani Judo - Optometrist",
+        rating: 4.7,
+        address: "Nancholi Trading Center",
+        phone: "+265 997 813 198",
+        hours: "Mon-Fri: 8AM-5PM, Weekends: 8AM-1PM",
+        services: ["Eye Exams", "Contact Lenses", "Glasses", "Professional Eye Care", "Vision Consultation"],
+      },
+      {
+        name: "Clear Sight Nancholi",
         rating: 4.1,
         address: "Nancholi Market",
         phone: "+265 1 772 901",
         hours: "8AM-6PM",
-        services: ["Eye Exams", "Glasses", "Vision Therapy"],
+        services: ["Eye Tests", "Reading Glasses", "Vision Therapy"],
       },
     ],
     gyms: [
@@ -2349,6 +2357,15 @@ export default function SearchPage() {
                                       size="sm"
                                       variant="outline"
                                       className="flex-1 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600 bg-transparent"
+                                      onClick={() => {
+                                        // Check if this is Pilirani Judo's listing
+                                        if (service.name === "Pilirani Judo - Optometrist") {
+                                          window.location.href = "/provider/pilirani-judo"
+                                        } else {
+                                          // For other providers, show a coming soon message or generic details
+                                          alert("Provider details coming soon!")
+                                        }
+                                      }}
                                     >
                                       View Details
                                     </Button>

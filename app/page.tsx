@@ -31,23 +31,38 @@ export default function HomePage() {
             <Image src="/logo.png" alt="Health Hub MW Logo" width={50} height={50} className="object-contain" />
             <div>
               <h1 className="text-xl font-bold text-gray-900">Blantyre Health Hub</h1>
-              <p className="text-xs text-gray-600">Your Complete Health Directory</p>
+              <p className="text-xs text-gray-600">Your Complete Health Hub</p>
             </div>
           </div>
           <nav className="hidden md:flex items-center space-x-6">
             <Link href="#services" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">
-              Services
+              Health
             </Link>
-            <Link href="#directory" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">
-              Directory
+            <Link href="#providers" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">
+              Providers
             </Link>
-            <Link href="#about" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">
-              About
-            </Link>
+            <div className="relative group">
+              <button className="text-gray-600 hover:text-blue-600 transition-colors font-medium">About</button>
+              <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className="py-2">
+                  <Link
+                    href="#about"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                  >
+                    About Us
+                  </Link>
+                  <Link
+                    href="/terms"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                  >
+                    Terms & Policies
+                  </Link>
+                </div>
+              </div>
+            </div>
             <Link href="#contact" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">
               Contact
             </Link>
-            <Button className="bg-blue-600 hover:bg-blue-700">Find Services</Button>
           </nav>
         </div>
       </header>
@@ -56,7 +71,7 @@ export default function HomePage() {
       <section className="py-20 px-4">
         <div className="container mx-auto text-center">
           <Badge variant="secondary" className="mb-4 bg-blue-100 text-blue-800">
-            🏥 Blantyre's Premier Health Directory
+            🏥 Blantyre's Premier Health Hub
           </Badge>
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
             Your Complete
@@ -64,7 +79,7 @@ export default function HomePage() {
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             Find and connect with verified healthcare providers instantly through our website. Our platform gives you
-            direct access to trusted professionals across pharmacy, dental, optical, and skincare services.
+            direct access to trusted professionals across pharmacy, dental, optical, and skincare.
           </p>
 
           {/* Search Bar */}
@@ -93,7 +108,7 @@ export default function HomePage() {
               <MapPin className="h-4 w-4 mr-1" /> Blantyre, Malawi
             </span>
             <span className="flex items-center">
-              <Clock className="h-4 w-4 mr-1" /> 24/7 Directory
+              <Clock className="h-4 w-4 mr-1" /> 24/7 Access
             </span>
             <span className="flex items-center">
               <Star className="h-4 w-4 mr-1" /> Verified Providers
@@ -106,9 +121,9 @@ export default function HomePage() {
       <section id="services" className="py-20 px-4 bg-white">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Health Services Directory</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Health Hub</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Find trusted healthcare providers and wellness services across Blantyre
+              Find trusted healthcare providers and wellness across Blantyre
             </p>
           </div>
 
@@ -129,7 +144,7 @@ export default function HomePage() {
                   <li>• Prescription medications</li>
                   <li>• Health consultations</li>
                   <li>• Medical supplies</li>
-                  <li>• Emergency services</li>
+                  <li>• Emergency care</li>
                 </ul>
                 <Link href="/search?q=&category=pharmacies">
                   <Button
@@ -149,7 +164,7 @@ export default function HomePage() {
                   <Eye className="h-8 w-8 text-slate-600" />
                 </div>
                 <CardTitle className="text-xl">Opticians</CardTitle>
-                <CardDescription>Professional eye care services and quality eyewear solutions</CardDescription>
+                <CardDescription>Professional eye care and quality eyewear solutions</CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-gray-600 mb-4">
@@ -203,7 +218,7 @@ export default function HomePage() {
                   <Dumbbell className="h-8 w-8 text-slate-600" />
                 </div>
                 <CardTitle className="text-xl">Gyms & Fitness</CardTitle>
-                <CardDescription>Modern fitness facilities and personal training services</CardDescription>
+                <CardDescription>Modern fitness facilities and personal training</CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-gray-600 mb-4">
@@ -236,7 +251,7 @@ export default function HomePage() {
                 <ul className="space-y-2 text-sm text-gray-600 mb-4">
                   <li>• Skincare products</li>
                   <li>• Beauty treatments</li>
-                  <li>• Dermatology services</li>
+                  <li>• Dermatology care</li>
                   <li>• Cosmetic procedures</li>
                 </ul>
                 <Link href="/search?q=&category=skincare">
@@ -256,17 +271,19 @@ export default function HomePage() {
                 <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Heart className="h-8 w-8 text-red-600" />
                 </div>
-                <CardTitle className="text-xl text-red-700">Emergency Services</CardTitle>
+                <CardTitle className="text-xl text-red-700">Emergency</CardTitle>
                 <CardDescription>24/7 emergency healthcare contacts and locations</CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-gray-600 mb-4">
                   <li>• Emergency contacts</li>
                   <li>• Hospital locations</li>
-                  <li>• Ambulance services</li>
+                  <li>• Ambulance</li>
                   <li>• First aid centers</li>
                 </ul>
-                <Button className="w-full bg-red-600 hover:bg-red-700">Emergency Info</Button>
+                <Link href="/emergency">
+                  <Button className="w-full bg-red-600 hover:bg-red-700">Emergency Info</Button>
+                </Link>
               </CardContent>
             </Card>
           </div>
@@ -274,11 +291,11 @@ export default function HomePage() {
       </section>
 
       {/* Featured Providers */}
-      <section id="directory" className="py-20 px-4 bg-gray-50">
+      <section id="providers" className="py-20 px-4 bg-gray-50">
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Featured Health Providers</h2>
-            <p className="text-xl text-gray-600">Top-rated healthcare services in Blantyre</p>
+            <p className="text-xl text-gray-600">Top-rated healthcare in Blantyre</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -336,9 +353,9 @@ export default function HomePage() {
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">About Blantyre Health Hub</h2>
               <p className="text-lg text-gray-600 mb-6">
-                Blantyre Health Hub is your comprehensive directory for all healthcare and wellness services in
-                Blantyre. We connect residents with trusted healthcare providers, making it easier to find quality care
-                when you need it most.
+                Blantyre Health Hub is your comprehensive hub for all healthcare and wellness in Blantyre. We connect
+                residents with trusted healthcare providers, making it easier to find quality care when you need it
+                most.
               </p>
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="text-center p-4 bg-blue-50 rounded-lg">
@@ -347,11 +364,11 @@ export default function HomePage() {
                 </div>
                 <div className="text-center p-4 bg-slate-50 rounded-lg">
                   <div className="text-2xl font-bold text-slate-600">5</div>
-                  <div className="text-sm text-gray-600">Service Categories</div>
+                  <div className="text-sm text-gray-600">Health Categories</div>
                 </div>
                 <div className="text-center p-4 bg-blue-50 rounded-lg">
                   <div className="text-2xl font-bold text-blue-600">24/7</div>
-                  <div className="text-sm text-gray-600">Directory Access</div>
+                  <div className="text-sm text-gray-600">Access</div>
                 </div>
                 <div className="text-center p-4 bg-slate-50 rounded-lg">
                   <div className="text-2xl font-bold text-slate-600">100%</div>
@@ -360,9 +377,9 @@ export default function HomePage() {
               </div>
             </div>
             <div className="bg-gradient-to-br from-blue-600 to-slate-700 rounded-2xl p-8 text-white">
-              <h3 className="text-2xl font-bold mb-4">Need to List Your Service?</h3>
+              <h3 className="text-2xl font-bold mb-4">Need to List Your Business?</h3>
               <p className="mb-6">
-                Join our directory and connect with thousands of potential patients and clients in Blantyre.
+                Join our hub and connect with thousands of potential patients and clients in Blantyre.
               </p>
               <ul className="space-y-2 mb-6">
                 <li className="flex items-center">
@@ -498,7 +515,7 @@ export default function HomePage() {
                   <div className="flex items-center mb-4">
                     <Clock className="h-6 w-6 text-blue-600 mr-3" />
                     <div>
-                      <h4 className="font-semibold">Directory Hours</h4>
+                      <h4 className="font-semibold">Hub Hours</h4>
                       <p className="text-gray-600">24/7 Online Access</p>
                     </div>
                   </div>
@@ -518,15 +535,15 @@ export default function HomePage() {
                 <Image src="/logo.png" alt="Health Hub MW Logo" width={32} height={32} className="object-contain" />
                 <div>
                   <h3 className="text-lg font-bold">Blantyre Health Hub</h3>
-                  <p className="text-xs text-gray-400">Your Health Directory</p>
+                  <p className="text-xs text-gray-400">Your Health Hub</p>
                 </div>
               </div>
               <p className="text-gray-400 text-sm">
-                Connecting Blantyre residents with trusted healthcare providers and wellness services.
+                Connecting Blantyre residents with trusted healthcare providers and wellness.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Services</h4>
+              <h4 className="font-semibold mb-4">Health</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
                 <li>
                   <Link href="#" className="hover:text-white transition-colors">
@@ -564,13 +581,18 @@ export default function HomePage() {
                   </Link>
                 </li>
                 <li>
+                  <Link href="/terms" className="hover:text-white transition-colors">
+                    Terms & Conditions
+                  </Link>
+                </li>
+                <li>
                   <Link href="#" className="hover:text-white transition-colors">
                     List Your Business
                   </Link>
                 </li>
                 <li>
                   <Link href="#" className="hover:text-white transition-colors">
-                    Emergency Services
+                    Emergency
                   </Link>
                 </li>
                 <li>
@@ -590,8 +612,24 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
-            <p>&copy; 2025 Blantyre Health Hub. All rights reserved. | Serving Blantyre, Malawi</p>
+
+          {/* Subscribe Section */}
+          <div className="border-t border-gray-800 mt-8 pt-8">
+            <div className="text-center mb-6">
+              <h3 className="text-xl font-bold text-white mb-2">Stay Connected with Health Updates</h3>
+              <p className="text-gray-400 text-sm mb-4">
+                Subscribe to receive the latest healthcare information and wellness tips for Blantyre
+              </p>
+              <Link href="/register">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg">
+                  <Mail className="h-5 w-5 mr-2" />
+                  Subscribe Now
+                </Button>
+              </Link>
+            </div>
+            <div className="text-center text-gray-400 text-sm">
+              <p>&copy; 2025 Blantyre Health Hub. All rights reserved. | Serving Blantyre, Malawi</p>
+            </div>
           </div>
         </div>
       </footer>
