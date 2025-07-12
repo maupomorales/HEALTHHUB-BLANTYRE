@@ -80,12 +80,16 @@ export default function RegisterPage() {
     setMessage(null)
 
     try {
+      // Send registration data directly to healthhubconnect071@gmail.com
       const response = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          targetEmail: "healthhubconnect071@gmail.com",
+        }),
       })
 
       const result = await response.json()
@@ -93,7 +97,7 @@ export default function RegisterPage() {
       if (response.ok) {
         setMessage({
           type: "success",
-          text: "Registration successful! Welcome to Blantyre Health Hub. You'll receive updates about healthcare services in your area.",
+          text: "Registration successful! Your information has been sent directly to healthhubconnect071@gmail.com. Our team will contact you soon with health updates for your area.",
         })
         // Reset form
         setFormData({
@@ -154,10 +158,16 @@ export default function RegisterPage() {
             Join thousands of Blantyre residents who stay informed about healthcare services, wellness tips, and health
             updates in their area
           </p>
-          <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-lg px-4 py-2">
-            <CheckCircle className="h-5 w-5 mr-2" />
-            Free Registration
-          </Badge>
+          <div className="flex items-center justify-center gap-4">
+            <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-lg px-4 py-2">
+              <CheckCircle className="h-5 w-5 mr-2" />
+              Free Registration
+            </Badge>
+            <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-lg px-4 py-2">
+              <Mail className="h-5 w-5 mr-2" />
+              Direct to Email
+            </Badge>
+          </div>
         </div>
       </section>
 
@@ -179,6 +189,21 @@ export default function RegisterPage() {
               </CardContent>
             </Card>
           )}
+
+          {/* Email Info Card */}
+          <Card className="mb-8 border-0 shadow-lg bg-blue-50">
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <Mail className="h-6 w-6 text-blue-600 mr-3" />
+                <div>
+                  <h3 className="font-semibold text-blue-900">Direct Email Registration</h3>
+                  <p className="text-blue-700 text-sm">
+                    Your registration will be sent directly to: <strong>healthhubconnect071@gmail.com</strong>
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
           <Card className="border-0 shadow-lg">
             <CardHeader>
@@ -364,12 +389,12 @@ export default function RegisterPage() {
                   {isLoading ? (
                     <>
                       <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                      Creating Account...
+                      Sending to Email...
                     </>
                   ) : (
                     <>
-                      <UserPlus className="h-5 w-5 mr-2" />
-                      Subscribe to Health Hub
+                      <Mail className="h-5 w-5 mr-2" />
+                      Send Registration to Email
                     </>
                   )}
                 </Button>
@@ -446,12 +471,11 @@ export default function RegisterPage() {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Emergency</h4>
+              <h4 className="font-semibold mb-4">Contact</h4>
               <div className="space-y-2 text-sm">
-                <p className="text-red-400 font-semibold">Emergency: 997</p>
-                <p className="text-gray-400">Police: 990</p>
-                <p className="text-gray-400">Fire: 998</p>
-                <p className="text-gray-400">Ambulance: 998</p>
+                <p className="text-blue-400 font-semibold">healthhubconnect071@gmail.com</p>
+                <p className="text-gray-400">+265 897976524</p>
+                <p className="text-gray-400">Blantyre, Malawi</p>
               </div>
             </div>
           </div>

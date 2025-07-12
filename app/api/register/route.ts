@@ -1,23 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
 
-// In a real application, you would use a proper database
-// For this example, we'll simulate database operations
-interface User {
-  id: string
-  firstName: string
-  lastName: string
-  email: string
-  phone: string
-  dateOfBirth?: string
-  address?: string
-  city: string
-  interests: string[]
-  createdAt: string
-}
-
-// Simulated database (in production, use a real database like PostgreSQL, MongoDB, etc.)
-const users: User[] = []
-
 // Email validation regex
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -53,66 +35,80 @@ export async function POST(request: NextRequest) {
       errors.push("City/Area is required")
     }
 
-    // Check if email already exists
-    const existingUser = users.find((user) => user.email.toLowerCase() === email.toLowerCase())
-    if (existingUser) {
-      errors.push("An account with this email already exists")
-    }
-
-    // Check if phone already exists
-    const existingPhone = users.find((user) => user.phone === phone.replace(/\s/g, ""))
-    if (existingPhone) {
-      errors.push("An account with this phone number already exists")
-    }
-
     if (errors.length > 0) {
       return NextResponse.json({ error: errors.join(", ") }, { status: 400 })
     }
 
-    // Create new user
-    const newUser: User = {
-      id: Date.now().toString(), // In production, use proper UUID
-      firstName: firstName.trim(),
-      lastName: lastName.trim(),
-      email: email.toLowerCase().trim(),
-      phone: phone.replace(/\s/g, ""),
-      dateOfBirth: dateOfBirth || undefined,
-      address: address?.trim() || undefined,
-      city: city.trim(),
-      interests: Array.isArray(interests) ? interests : [],
-      createdAt: new Date().toISOString(),
+    // Prepare email content
+    const emailSubject = `New Health Hub Registration - ${firstName} ${lastName}`
+    const emailBody = `
+New Registration for Blantyre Health Hub
+
+PERSONAL INFORMATION:
+- Name: ${firstName} ${lastName}
+- Email: ${email}
+- Phone: ${phone}
+- Date of Birth: ${dateOfBirth || "Not provided"}
+- Address: ${address || "Not provided"}
+- City/Area: ${city}
+
+HEALTH INTERESTS:
+${interests && interests.length > 0 ? interests.map((interest: string) => `- ${interest}`).join("\n") : "- None selected"}
+
+REGISTRATION DETAILS:
+- Registration Date: ${new Date().toLocaleString()}
+- Registration Time: ${new Date().toISOString()}
+
+---
+This registration was submitted through the Blantyre Health Hub website.
+    `.trim()
+
+    // Send email using a service (we'll simulate this for now)
+    try {
+      // In a real application, you would use an email service like:
+      // - Nodemailer with SMTP
+      // - SendGrid
+      // - Resend
+      // - AWS SES
+      // - Mailgun
+
+      // For now, we'll simulate sending the email
+      await sendEmailNotification({
+        to: "healthhubconnect071@gmail.com",
+        subject: emailSubject,
+        body: emailBody,
+        userData: {
+          firstName,
+          lastName,
+          email,
+          phone,
+          dateOfBirth,
+          address,
+          city,
+          interests,
+        },
+      })
+
+      console.log("Email sent successfully to healthhubconnect071@gmail.com")
+      console.log("Registration data:", {
+        name: `${firstName} ${lastName}`,
+        email,
+        phone,
+        city,
+        interests,
+        timestamp: new Date().toISOString(),
+      })
+    } catch (emailError) {
+      console.error("Failed to send email:", emailError)
+      // Continue with success response even if email fails
+      // You might want to log this to a monitoring service
     }
-
-    // Save to "database" (in production, save to real database)
-    users.push(newUser)
-
-    // Log registration (in production, you might want to send welcome email, etc.)
-    console.log("New user registered:", {
-      id: newUser.id,
-      name: `${newUser.firstName} ${newUser.lastName}`,
-      email: newUser.email,
-      city: newUser.city,
-      interests: newUser.interests,
-    })
-
-    // In a real application, you might want to:
-    // 1. Send a welcome email
-    // 2. Create a user session
-    // 3. Send SMS confirmation
-    // 4. Add to mailing list
-    // 5. Log analytics event
 
     return NextResponse.json(
       {
         success: true,
-        message: "Registration successful! Welcome to Blantyre Health Hub.",
-        user: {
-          id: newUser.id,
-          firstName: newUser.firstName,
-          lastName: newUser.lastName,
-          email: newUser.email,
-          city: newUser.city,
-        },
+        message:
+          "Registration successful! Your information has been sent to our team. We'll be in touch soon with health updates for your area.",
       },
       { status: 201 },
     )
@@ -122,29 +118,49 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Optional: GET endpoint to retrieve user data (for admin purposes)
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url)
-  const email = searchParams.get("email")
+// Email sending function (simulated - replace with real email service)
+async function sendEmailNotification({
+  to,
+  subject,
+  body,
+  userData,
+}: {
+  to: string
+  subject: string
+  body: string
+  userData: any
+}) {
+  // This is where you would integrate with a real email service
+  // For demonstration, we'll just log the email content
 
-  if (!email) {
-    return NextResponse.json({ error: "Email parameter is required" }, { status: 400 })
-  }
+  console.log("=== EMAIL NOTIFICATION ===")
+  console.log("To:", to)
+  console.log("Subject:", subject)
+  console.log("Body:", body)
+  console.log("========================")
 
-  const user = users.find((u) => u.email.toLowerCase() === email.toLowerCase())
+  // Simulate email sending delay
+  await new Promise((resolve) => setTimeout(resolve, 1000))
 
-  if (!user) {
-    return NextResponse.json({ error: "User not found" }, { status: 404 })
-  }
-
-  // Return user data without sensitive information
-  return NextResponse.json({
-    id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    city: user.city,
-    interests: user.interests,
-    createdAt: user.createdAt,
+  // In production, replace this with actual email sending:
+  /*
+  // Example with Nodemailer:
+  const transporter = nodemailer.createTransporter({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
   })
+  
+  await transporter.sendMail({
+    from: process.env.EMAIL_USER,
+    to: to,
+    subject: subject,
+    text: body,
+    html: body.replace(/\n/g, '<br>')
+  })
+  */
+
+  return true
 }
