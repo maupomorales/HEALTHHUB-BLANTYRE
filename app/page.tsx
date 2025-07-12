@@ -63,9 +63,6 @@ export default function HomePage() {
             <Link href="#contact" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">
               Contact
             </Link>
-            <Link href="/register">
-              <Button className="bg-blue-600 hover:bg-blue-700">Subscribe</Button>
-            </Link>
           </nav>
         </div>
       </header>
@@ -615,8 +612,24 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
-            <p>&copy; 2025 Blantyre Health Hub. All rights reserved. | Serving Blantyre, Malawi</p>
+
+          {/* Subscribe Section */}
+          <div className="border-t border-gray-800 mt-8 pt-8">
+            <div className="text-center mb-6">
+              <h3 className="text-xl font-bold text-white mb-2">Stay Connected with Health Updates</h3>
+              <p className="text-gray-400 text-sm mb-4">
+                Subscribe to receive the latest healthcare information and wellness tips for Blantyre
+              </p>
+              <Link href="/register">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg">
+                  <Mail className="h-5 w-5 mr-2" />
+                  Subscribe Now
+                </Button>
+              </Link>
+            </div>
+            <div className="text-center text-gray-400 text-sm">
+              <p>&copy; 2025 Blantyre Health Hub. All rights reserved. | Serving Blantyre, Malawi</p>
+            </div>
           </div>
         </div>
       </footer>
