@@ -54,9 +54,7 @@ export default function RegisterPage() {
     "Eye Care",
     "Fitness & Wellness",
     "Skincare & Beauty",
-    "Emergency Care",
     "Mental Health",
-    "Nutrition",
   ]
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
