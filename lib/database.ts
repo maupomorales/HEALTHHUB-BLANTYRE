@@ -1,17 +1,34 @@
 // Database configuration and connection
-import { Pool } from "pg"
+import { Client } from "pg"
 
-// Database connection pool
-let pool: Pool | null = null
+// Database connection
+let client: Client | null = null
 
-export function getPool() {
-  if (!pool) {
-    pool = new Pool({
+export function getClient() {
+  if (!client) {
+    client = new Client({
       connectionString: process.env.DATABASE_URL,
-      ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false,
+      ssl: { rejectUnauthorized: false },
     })
   }
-  return pool
+  return client
+}
+
+// Ensure connection is established
+export async function connectDatabase() {
+  const client = getClient()
+  if (!client.connected) {
+    await client.connect()
+  }
+  return client
+}
+
+// Close database connection
+export async function disconnectDatabase() {
+  if (client && client.connected) {
+    await client.end()
+    client = null
+  }
 }
 
 // Database schema types
@@ -32,14 +49,23 @@ export interface User {
 
 // Database operations
 export class UserDatabase {
-  private pool: Pool
+  private client: Client
 
   constructor() {
-    this.pool = getPool()
+    this.client = getClient()
+  }
+
+  // Ensure connection before operations
+  private async ensureConnection() {
+    if (!this.client.connected) {
+      await this.client.connect()
+    }
   }
 
   // Create users table if it doesn't exist
   async initializeDatabase() {
+    await this.ensureConnection()
+
     const createTableQuery = `
       CREATE TABLE IF NOT EXISTS users (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -62,7 +88,7 @@ export class UserDatabase {
     `
 
     try {
-      await this.pool.query(createTableQuery)
+      await this.client.query(createTableQuery)
       console.log("Database initialized successfully")
     } catch (error) {
       console.error("Error initializing database:", error)
@@ -72,6 +98,8 @@ export class UserDatabase {
 
   // Create a new user
   async createUser(userData: Omit<User, "id" | "created_at" | "updated_at" | "is_active">): Promise<User> {
+    await this.ensureConnection()
+
     const query = `
       INSERT INTO users (first_name, last_name, email, phone, date_of_birth, address, city, interests)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
@@ -90,7 +118,7 @@ export class UserDatabase {
     ]
 
     try {
-      const result = await this.pool.query(query, values)
+      const result = await this.client.query(query, values)
       return result.rows[0]
     } catch (error) {
       console.error("Error creating user:", error)
@@ -100,9 +128,11 @@ export class UserDatabase {
 
   // Check if email exists
   async emailExists(email: string): Promise<boolean> {
+    await this.ensureConnection()
+
     const query = "SELECT id FROM users WHERE email = $1"
     try {
-      const result = await this.pool.query(query, [email])
+      const result = await this.client.query(query, [email])
       return result.rows.length > 0
     } catch (error) {
       console.error("Error checking email:", error)
@@ -112,9 +142,11 @@ export class UserDatabase {
 
   // Check if phone exists
   async phoneExists(phone: string): Promise<boolean> {
+    await this.ensureConnection()
+
     const query = "SELECT id FROM users WHERE phone = $1"
     try {
-      const result = await this.pool.query(query, [phone])
+      const result = await this.client.query(query, [phone])
       return result.rows.length > 0
     } catch (error) {
       console.error("Error checking phone:", error)
@@ -124,9 +156,11 @@ export class UserDatabase {
 
   // Get user by email
   async getUserByEmail(email: string): Promise<User | null> {
+    await this.ensureConnection()
+
     const query = "SELECT * FROM users WHERE email = $1"
     try {
-      const result = await this.pool.query(query, [email])
+      const result = await this.client.query(query, [email])
       return result.rows[0] || null
     } catch (error) {
       console.error("Error getting user by email:", error)
@@ -136,13 +170,15 @@ export class UserDatabase {
 
   // Get all users (for admin purposes)
   async getAllUsers(limit = 100, offset = 0): Promise<User[]> {
+    await this.ensureConnection()
+
     const query = `
       SELECT * FROM users 
       ORDER BY created_at DESC 
       LIMIT $1 OFFSET $2
     `
     try {
-      const result = await this.pool.query(query, [limit, offset])
+      const result = await this.client.query(query, [limit, offset])
       return result.rows
     } catch (error) {
       console.error("Error getting all users:", error)
@@ -152,9 +188,11 @@ export class UserDatabase {
 
   // Get user count
   async getUserCount(): Promise<number> {
+    await this.ensureConnection()
+
     const query = "SELECT COUNT(*) as count FROM users WHERE is_active = true"
     try {
-      const result = await this.pool.query(query)
+      const result = await this.client.query(query)
       return Number.parseInt(result.rows[0].count)
     } catch (error) {
       console.error("Error getting user count:", error)
@@ -164,6 +202,8 @@ export class UserDatabase {
 
   // Update user
   async updateUser(id: string, updates: Partial<User>): Promise<User> {
+    await this.ensureConnection()
+
     const setClause = Object.keys(updates)
       .map((key, index) => `${key} = $${index + 2}`)
       .join(", ")
@@ -178,7 +218,7 @@ export class UserDatabase {
     const values = [id, ...Object.values(updates)]
 
     try {
-      const result = await this.pool.query(query, values)
+      const result = await this.client.query(query, values)
       return result.rows[0]
     } catch (error) {
       console.error("Error updating user:", error)
@@ -188,9 +228,11 @@ export class UserDatabase {
 
   // Deactivate user (soft delete)
   async deactivateUser(id: string): Promise<boolean> {
+    await this.ensureConnection()
+
     const query = "UPDATE users SET is_active = false, updated_at = NOW() WHERE id = $1"
     try {
-      const result = await this.pool.query(query, [id])
+      const result = await this.client.query(query, [id])
       return result.rowCount > 0
     } catch (error) {
       console.error("Error deactivating user:", error)

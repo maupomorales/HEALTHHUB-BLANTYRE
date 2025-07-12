@@ -1,17 +1,21 @@
 // Database setup script
-const { Pool } = require("pg")
+const { Client } = require("pg")
 
 async function setupDatabase() {
-  const pool = new Pool({
+  const client = new Client({
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false,
+    ssl: { rejectUnauthorized: false },
   })
 
   try {
-    console.log("Setting up Blantyre Health Hub database...")
+    console.log("Connecting to Blantyre Health Hub database...")
+    await client.connect()
+    console.log("✅ Connected successfully!")
+
+    console.log("Setting up database tables...")
 
     // Create users table
-    await pool.query(`
+    await client.query(`
       CREATE TABLE IF NOT EXISTS users (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         first_name VARCHAR(100) NOT NULL,
@@ -29,7 +33,7 @@ async function setupDatabase() {
     `)
 
     // Create indexes
-    await pool.query(`
+    await client.query(`
       CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
       CREATE INDEX IF NOT EXISTS idx_users_city ON users(city);
       CREATE INDEX IF NOT EXISTS idx_users_created_at ON users(created_at);
@@ -37,7 +41,7 @@ async function setupDatabase() {
     `)
 
     // Create admin logs table
-    await pool.query(`
+    await client.query(`
       CREATE TABLE IF NOT EXISTS admin_logs (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         action VARCHAR(100) NOT NULL,
@@ -53,12 +57,14 @@ async function setupDatabase() {
     console.log("   - admin_logs")
 
     // Get current user count
-    const result = await pool.query("SELECT COUNT(*) as count FROM users WHERE is_active = true")
+    const result = await client.query("SELECT COUNT(*) as count FROM users WHERE is_active = true")
     console.log(`👥 Current active users: ${result.rows[0].count}`)
   } catch (error) {
     console.error("❌ Database setup failed:", error)
+    console.error("Error details:", error.message)
   } finally {
-    await pool.end()
+    await client.end()
+    console.log("🔌 Database connection closed")
   }
 }
 
