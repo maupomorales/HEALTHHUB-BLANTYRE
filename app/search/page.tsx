@@ -2105,7 +2105,10 @@ export default function SearchPage() {
 
   useEffect(() => {
     if (searchQuery) {
-      handleSearch()
+      const timeoutId = setTimeout(() => {
+        handleSearch()
+      }, 300) // Debounce search by 300ms
+      return () => clearTimeout(timeoutId)
     }
   }, [searchQuery, selectedCategory])
 
