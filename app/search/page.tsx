@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -22,6 +22,27 @@ import {
 import Link from "next/link"
 import Image from "next/image"
 import { useSearchParams } from "next/navigation"
+
+// Type definitions
+interface Service {
+  name: string
+  rating: number
+  address: string
+  phone: string
+  hours: string
+  services: string[]
+}
+
+interface AreaData {
+  pharmacies?: Service[]
+  dentists?: Service[]
+  opticians?: Service[]
+  gyms?: Service[]
+  skincare?: Service[]
+  [key: string]: Service[] | undefined
+}
+
+type ServiceData = Record<string, AreaData>
 
 // Comprehensive data for all Blantyre areas
 const serviceData = {
@@ -2100,16 +2121,10 @@ export default function SearchPage() {
   const searchParams = useSearchParams()
   const [searchQuery, setSearchQuery] = useState(searchParams?.get("q") || "")
   const [selectedCategory, setSelectedCategory] = useState("all")
-  const [results, setResults] = useState<any>({})
+  const [results, setResults] = useState<ServiceData>({})
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    if (searchQuery) {
-      handleSearch()
-    }
-  }, [searchQuery, selectedCategory])
-
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
     setIsLoading(true)
 
     // Simulate API call delay
@@ -2119,7 +2134,7 @@ export default function SearchPage() {
       )
 
       if (matchedAreas.length > 0) {
-        const searchResults: any = {}
+        const searchResults: ServiceData = {}
         matchedAreas.forEach((area) => {
           searchResults[area] = serviceData[area as keyof typeof serviceData]
         })
@@ -2129,9 +2144,15 @@ export default function SearchPage() {
       }
       setIsLoading(false)
     }, 500)
-  }
+  }, [searchQuery])
 
-  const getFilteredResults = (areaData: any) => {
+  useEffect(() => {
+    if (searchQuery) {
+      handleSearch()
+    }
+  }, [searchQuery, selectedCategory, handleSearch])
+
+  const getFilteredResults = (areaData: AreaData) => {
     if (selectedCategory === "all") {
       return areaData
     }
@@ -2140,9 +2161,9 @@ export default function SearchPage() {
 
   const getTotalCount = () => {
     let total = 0
-    Object.values(results).forEach((areaData: any) => {
+    Object.values(results).forEach((areaData: AreaData) => {
       const filtered = getFilteredResults(areaData)
-      Object.values(filtered).forEach((services: any) => {
+      Object.values(filtered).forEach((services: Service[] | undefined) => {
         if (Array.isArray(services)) {
           total += services.length
         }
@@ -2253,17 +2274,17 @@ export default function SearchPage() {
           ) : Object.keys(results).length > 0 ? (
             <>
               <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Search Results for "{searchQuery}"</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Search Results for &quot;{searchQuery}&quot;</h2>
                 <p className="text-gray-600">
                   Found {getTotalCount()} healthcare {getTotalCount() === 1 ? "provider" : "providers"} in{" "}
                   {Object.keys(results).length} {Object.keys(results).length === 1 ? "area" : "areas"}
                 </p>
               </div>
 
-              {Object.entries(results).map(([area, areaData]: [string, any]) => {
+              {Object.entries(results).map(([area, areaData]: [string, AreaData]) => {
                 const filteredData = getFilteredResults(areaData)
                 const hasResults = Object.values(filteredData).some(
-                  (services: any) => Array.isArray(services) && services.length > 0,
+                  (services: Service[] | undefined) => Array.isArray(services) && services.length > 0,
                 )
 
                 if (!hasResults) return null
@@ -2275,7 +2296,7 @@ export default function SearchPage() {
                       <h3 className="text-2xl font-bold text-gray-900">{area}</h3>
                     </div>
 
-                    {Object.entries(filteredData).map(([category, services]: [string, any]) => {
+                    {Object.entries(filteredData).map(([category, services]: [string, Service[] | undefined]) => {
                       if (!Array.isArray(services) || services.length === 0) return null
 
                       const categoryInfo = categories.find((cat) => cat.id === category)
@@ -2294,7 +2315,7 @@ export default function SearchPage() {
                           </div>
 
                           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {services.map((service: any, index: number) => (
+                            {services.map((service: Service, index: number) => (
                               <Card
                                 key={index}
                                 className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
@@ -2370,7 +2391,7 @@ export default function SearchPage() {
                 <Search className="h-12 w-12 text-gray-400" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">No results found</h3>
-              <p className="text-gray-600 mb-4">We couldn't find any healthcare services in "{searchQuery}".</p>
+              <p className="text-gray-600 mb-4">We couldn&apos;t find any healthcare services in &quot;{searchQuery}&quot;.</p>
               <p className="text-sm text-gray-500 mb-6">
                 Try searching for areas like: Blantyre, Limbe, Chichiri, Mandala, Ndirande, Chilomoni, or Mount Pleasant
               </p>
