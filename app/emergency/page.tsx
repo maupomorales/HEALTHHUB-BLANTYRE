@@ -548,7 +548,7 @@ export default function EmergencyPage() {
             <div className="bg-white/10 rounded-lg p-6">
               <Heart className="h-12 w-12 mx-auto mb-4" />
               <h3 className="text-xl font-bold mb-2">Provide Aid</h3>
-              <p className="text-red-100">Give first aid if trained. Don't move seriously injured persons.</p>
+              <p className="text-red-100">Give first aid if trained. Don&apos;t move seriously injured persons.</p>
             </div>
           </div>
 

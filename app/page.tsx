@@ -56,7 +56,7 @@ export default function HomePage() {
       <section className="py-20 px-4">
         <div className="container mx-auto text-center">
           <Badge variant="secondary" className="mb-4 bg-blue-100 text-blue-800">
-            🏥 Blantyre's Premier Health Directory
+            🏥 Blantyre&apos;s Premier Health Directory
           </Badge>
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
             Your Complete
