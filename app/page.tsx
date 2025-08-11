@@ -48,7 +48,9 @@ export default function HomePage() {
             <Link href="#contact" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">
               Contact
             </Link>
-            <Button className="bg-blue-600 hover:bg-blue-700">Find Services</Button>
+            <Button asChild className="bg-blue-600 hover:bg-blue-700">
+              <Link href="/search">Find Services</Link>
+            </Button>
           </nav>
         </div>
       </header>
@@ -132,14 +134,9 @@ export default function HomePage() {
                   <li>• Medical supplies</li>
                   <li>• Emergency services</li>
                 </ul>
-                <Link href="/search?q=&category=pharmacies">
-                  <Button
-                    variant="outline"
-                    className="w-full bg-transparent hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600"
-                  >
-                    View Pharmacies
-                  </Button>
-                </Link>
+                <Button asChild variant="outline" className="w-full bg-transparent hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600">
+                  <Link href="/search?q=&category=pharmacies">View Pharmacies</Link>
+                </Button>
               </CardContent>
             </Card>
 
@@ -159,14 +156,9 @@ export default function HomePage() {
                   <li>• Contact lenses</li>
                   <li>• Vision therapy</li>
                 </ul>
-                <Link href="/search?q=&category=opticians">
-                  <Button
-                    variant="outline"
-                    className="w-full bg-transparent hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600"
-                  >
-                    View Opticians
-                  </Button>
-                </Link>
+                <Button asChild variant="outline" className="w-full bg-transparent hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600">
+                  <Link href="/search?q=&category=opticians">View Opticians</Link>
+                </Button>
               </CardContent>
             </Card>
 
@@ -186,14 +178,9 @@ export default function HomePage() {
                   <li>• Orthodontics</li>
                   <li>• Emergency dental care</li>
                 </ul>
-                <Link href="/search?q=&category=dentists">
-                  <Button
-                    variant="outline"
-                    className="w-full bg-transparent hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600"
-                  >
-                    View Dentists
-                  </Button>
-                </Link>
+                <Button asChild variant="outline" className="w-full bg-transparent hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600">
+                  <Link href="/search?q=&category=dentists">View Dentists</Link>
+                </Button>
               </CardContent>
             </Card>
 
@@ -213,14 +200,9 @@ export default function HomePage() {
                   <li>• Group classes</li>
                   <li>• Nutrition guidance</li>
                 </ul>
-                <Link href="/search?q=&category=gyms">
-                  <Button
-                    variant="outline"
-                    className="w-full bg-transparent hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600"
-                  >
-                    View Gyms
-                  </Button>
-                </Link>
+                <Button asChild variant="outline" className="w-full bg-transparent hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600">
+                  <Link href="/search?q=&category=gyms">View Gyms</Link>
+                </Button>
               </CardContent>
             </Card>
 
@@ -240,14 +222,9 @@ export default function HomePage() {
                   <li>• Dermatology services</li>
                   <li>• Cosmetic procedures</li>
                 </ul>
-                <Link href="/search?q=&category=skincare">
-                  <Button
-                    variant="outline"
-                    className="w-full bg-transparent hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600"
-                  >
-                    View Products
-                  </Button>
-                </Link>
+                <Button asChild variant="outline" className="w-full bg-transparent hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600">
+                  <Link href="/search?q=&category=skincare">View Products</Link>
+                </Button>
               </CardContent>
             </Card>
 
@@ -267,7 +244,9 @@ export default function HomePage() {
                   <li>• Ambulance services</li>
                   <li>• First aid centers</li>
                 </ul>
-                <Button className="w-full bg-red-600 hover:bg-red-700">Emergency Info</Button>
+                <Button asChild className="w-full bg-red-600 hover:bg-red-700">
+                  <Link href="/emergency">Emergency Info</Link>
+                </Button>
               </CardContent>
             </Card>
           </div>

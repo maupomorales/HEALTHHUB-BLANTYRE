@@ -362,9 +362,11 @@ export default function EmergencyPage() {
                       <Phone className="h-4 w-4 mr-1" />
                       Call
                     </Button>
-                    <Button variant="outline" size="sm" className="flex-1 bg-transparent">
-                      <MapPin className="h-4 w-4 mr-1" />
-                      Directions
+                    <Button asChild variant="outline" size="sm" className="flex-1 bg-transparent">
+                      <Link href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hospital.name + ' ' + hospital.address)}`} target="_blank" rel="noopener noreferrer">
+                        <MapPin className="h-4 w-4 mr-1" />
+                        Directions
+                      </Link>
                     </Button>
                   </div>
                 </CardContent>

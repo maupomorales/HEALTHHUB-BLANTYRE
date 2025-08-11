@@ -2370,8 +2370,11 @@ export default function SearchPage() {
                                       size="sm"
                                       variant="outline"
                                       className="flex-1 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600 bg-transparent"
+                                      asChild
                                     >
-                                      View Details
+                                      <Link href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(service.name + ' ' + service.address)}`} target="_blank" rel="noopener noreferrer">
+                                        View Details
+                                      </Link>
                                     </Button>
                                   </div>
                                 </CardContent>
