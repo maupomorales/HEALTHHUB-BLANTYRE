@@ -17,21 +17,32 @@ import {
   ArrowRight,
   Globe,
   Heart,
+  MessageCircle,
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import ContactForm from "@/components/contact-form"
 
 export default function HomePage() {
+  const handlePhoneCall = (phone: string) => {
+    window.open(`tel:${phone}`, "_self")
+  }
+
+  const handleWhatsApp = (phone: string, serviceName: string) => {
+    const message = `Hello! I'm interested in your services at ${serviceName}. Can you please provide more information?`
+    const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`
+    window.open(whatsappUrl, "_blank")
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-50">
       {/* Header */}
       <header className="border-b bg-white/90 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <Image src="/logo.png" alt="Health Hub MW Logo" width={50} height={50} className="object-contain" />
+            <Image src="/health-hub-logo.svg" alt="HEALTH-HUB MW Logo" width={50} height={50} className="object-contain" />
             <div>
-              <h1 className="text-xl font-bold text-gray-900">Blantyre Health Hub</h1>
+              <h1 className="text-xl font-bold text-gray-900">HEALTH-HUB MW</h1>
               <p className="text-xs text-gray-600">Your Complete Health Directory</p>
             </div>
           </div>
@@ -264,12 +275,12 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Sample Provider Cards */}
             {[
-              { name: "Central Pharmacy", type: "Pharmacy", rating: 4.8, location: "City Centre", hours: "24/7" },
-              { name: "Vision Care Opticians", type: "Optician", rating: 4.9, location: "Limbe", hours: "8AM-6PM" },
-              { name: "Smile Dental Clinic", type: "Dentist", rating: 4.7, location: "Mandala", hours: "8AM-5PM" },
-              { name: "FitLife Gym", type: "Gym", rating: 4.6, location: "Chichiri", hours: "5AM-10PM" },
-              { name: "Glow Skincare", type: "Skincare", rating: 4.8, location: "Limbe", hours: "9AM-7PM" },
-              { name: "HealthPlus Pharmacy", type: "Pharmacy", rating: 4.5, location: "Ndirande", hours: "7AM-9PM" },
+              { name: "Central Pharmacy", type: "Pharmacy", rating: 4.8, location: "City Centre", hours: "24/7", phone: "+265 1 620 123" },
+              { name: "Vision Care Opticians", type: "Optician", rating: 4.9, location: "Limbe", hours: "8AM-6PM", phone: "+265 1 622 345" },
+              { name: "Smile Dental Clinic", type: "Dentist", rating: 4.7, location: "Mandala", hours: "8AM-5PM", phone: "+265 1 621 789" },
+              { name: "FitLife Gym", type: "Gym", rating: 4.6, location: "Chichiri", hours: "5AM-10PM", phone: "+265 1 623 678" },
+              { name: "Glow Skincare", type: "Skincare", rating: 4.8, location: "Limbe", hours: "9AM-7PM", phone: "+265 1 624 901" },
+              { name: "HealthPlus Pharmacy", type: "Pharmacy", rating: 4.5, location: "Ndirande", hours: "7AM-9PM", phone: "+265 1 670 345" },
             ].map((provider, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
@@ -295,13 +306,24 @@ export default function HomePage() {
                       {provider.hours}
                     </div>
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full mt-4 bg-transparent hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600"
-                  >
-                    View Details
-                  </Button>
+                  <div className="flex gap-2 mt-4">
+                    <Button
+                      size="sm"
+                      className="flex-1 bg-blue-600 hover:bg-blue-700"
+                      onClick={() => handlePhoneCall(provider.phone)}
+                    >
+                      <Phone className="h-4 w-4 mr-1" />
+                      Call
+                    </Button>
+                    <Button
+                      size="sm"
+                      className="flex-1 bg-green-600 hover:bg-green-700"
+                      onClick={() => handleWhatsApp(provider.phone, provider.name)}
+                    >
+                      <MessageCircle className="h-4 w-4 mr-1" />
+                      WhatsApp
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -460,9 +482,9 @@ export default function HomePage() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <Image src="/logo.png" alt="Health Hub MW Logo" width={32} height={32} className="object-contain" />
+                <Image src="/health-hub-logo.svg" alt="HEALTH-HUB MW Logo" width={32} height={32} className="object-contain" />
                 <div>
-                  <h3 className="text-lg font-bold">Blantyre Health Hub</h3>
+                  <h3 className="text-lg font-bold">HEALTH-HUB MW</h3>
                   <p className="text-xs text-gray-400">Your Health Directory</p>
                 </div>
               </div>

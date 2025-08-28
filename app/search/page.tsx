@@ -18,6 +18,7 @@ import {
   Star,
   ArrowRight,
   Filter,
+  MessageCircle,
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -2124,6 +2125,16 @@ export default function SearchPage() {
   const [results, setResults] = useState<ServiceData>({})
   const [isLoading, setIsLoading] = useState(false)
 
+  const handlePhoneCall = (phone: string) => {
+    window.open(`tel:${phone}`, "_self")
+  }
+
+  const handleWhatsApp = (phone: string, serviceName: string) => {
+    const message = `Hello! I'm interested in your services at ${serviceName}. Can you please provide more information?`
+    const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`
+    window.open(whatsappUrl, "_blank")
+  }
+
   const handleSearch = useCallback(() => {
     setIsLoading(true)
 
@@ -2178,9 +2189,9 @@ export default function SearchPage() {
       <header className="border-b bg-white/90 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-3">
-            <Image src="/logo.png" alt="Health Hub MW Logo" width={50} height={50} className="object-contain" />
+            <Image src="/health-hub-logo.svg" alt="HEALTH-HUB MW Logo" width={50} height={50} className="object-contain" />
             <div>
-              <h1 className="text-xl font-bold text-gray-900">Blantyre Health Hub</h1>
+              <h1 className="text-xl font-bold text-gray-900">HEALTH-HUB MW</h1>
               <p className="text-xs text-gray-600">Your Complete Health Directory</p>
             </div>
           </Link>
@@ -2361,10 +2372,18 @@ export default function SearchPage() {
                                     <Button
                                       size="sm"
                                       className="flex-1 bg-blue-600 hover:bg-blue-700"
-                                      onClick={() => window.open(`tel:${service.phone}`, "_self")}
+                                      onClick={() => handlePhoneCall(service.phone)}
                                     >
                                       <Phone className="h-4 w-4 mr-1" />
                                       Call
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      className="flex-1 bg-green-600 hover:bg-green-700"
+                                      onClick={() => handleWhatsApp(service.phone, service.name)}
+                                    >
+                                      <MessageCircle className="h-4 w-4 mr-1" />
+                                      WhatsApp
                                     </Button>
                                     <Button
                                       size="sm"
@@ -2373,7 +2392,8 @@ export default function SearchPage() {
                                       asChild
                                     >
                                       <Link href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(service.name + ' ' + service.address)}`} target="_blank" rel="noopener noreferrer">
-                                        View Details
+                                        <MapPin className="h-4 w-4 mr-1" />
+                                        Map
                                       </Link>
                                     </Button>
                                   </div>
@@ -2446,9 +2466,9 @@ export default function SearchPage() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <Image src="/logo.png" alt="Health Hub MW Logo" width={32} height={32} className="object-contain" />
+                <Image src="/health-hub-logo.svg" alt="HEALTH-HUB MW Logo" width={32} height={32} className="object-contain" />
                 <div>
-                  <h3 className="text-lg font-bold">Blantyre Health Hub</h3>
+                  <h3 className="text-lg font-bold">HEALTH-HUB MW</h3>
                   <p className="text-xs text-gray-400">Your Health Directory</p>
                 </div>
               </div>

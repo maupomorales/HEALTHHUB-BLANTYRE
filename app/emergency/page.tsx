@@ -19,6 +19,7 @@ import {
   Info,
   Users,
   Activity,
+  MessageCircle,
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -205,15 +206,21 @@ export default function EmergencyPage() {
     window.open(`tel:${number}`, "_self")
   }
 
+  const handleWhatsApp = (phone: string, serviceName: string) => {
+    const message = `Hello! I need emergency assistance from ${serviceName}. Please help!`
+    const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`
+    window.open(whatsappUrl, "_blank")
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50">
       {/* Header */}
       <header className="border-b bg-white/90 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-3">
-            <Image src="/logo.png" alt="Health Hub MW Logo" width={50} height={50} className="object-contain" />
+            <Image src="/health-hub-logo.svg" alt="HEALTH-HUB MW Logo" width={50} height={50} className="object-contain" />
             <div>
-              <h1 className="text-xl font-bold text-gray-900">Blantyre Health Hub</h1>
+              <h1 className="text-xl font-bold text-gray-900">HEALTH-HUB MW</h1>
               <p className="text-xs text-gray-600">Emergency Services Directory</p>
             </div>
           </Link>
@@ -362,10 +369,18 @@ export default function EmergencyPage() {
                       <Phone className="h-4 w-4 mr-1" />
                       Call
                     </Button>
+                    <Button
+                      onClick={() => handleWhatsApp(hospital.phone, hospital.name)}
+                      className="flex-1 bg-green-600 hover:bg-green-700"
+                      size="sm"
+                    >
+                      <MessageCircle className="h-4 w-4 mr-1" />
+                      WhatsApp
+                    </Button>
                     <Button asChild variant="outline" size="sm" className="flex-1 bg-transparent">
                       <Link href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hospital.name + ' ' + hospital.address)}`} target="_blank" rel="noopener noreferrer">
                         <MapPin className="h-4 w-4 mr-1" />
-                        Directions
+                        Map
                       </Link>
                     </Button>
                   </div>
@@ -419,15 +434,26 @@ export default function EmergencyPage() {
                     </div>
                   </div>
 
-                  <Button
-                    onClick={() => handleEmergencyCall(clinic.phone)}
-                    variant="outline"
-                    size="sm"
-                    className="w-full hover:bg-red-50 hover:text-red-600 hover:border-red-600"
-                  >
-                    <Phone className="h-4 w-4 mr-1" />
-                    Call
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => handleEmergencyCall(clinic.phone)}
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 hover:bg-red-50 hover:text-red-600 hover:border-red-600"
+                    >
+                      <Phone className="h-4 w-4 mr-1" />
+                      Call
+                    </Button>
+                    <Button
+                      onClick={() => handleWhatsApp(clinic.phone, clinic.name)}
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 hover:bg-green-50 hover:text-green-600 hover:border-green-600"
+                    >
+                      <MessageCircle className="h-4 w-4 mr-1" />
+                      WhatsApp
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -478,15 +504,26 @@ export default function EmergencyPage() {
                     </div>
                   </div>
 
-                  <Button
-                    onClick={() => handleEmergencyCall(pharmacy.phone)}
-                    variant="outline"
-                    size="sm"
-                    className="w-full hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600"
-                  >
-                    <Phone className="h-4 w-4 mr-1" />
-                    Call
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => handleEmergencyCall(pharmacy.phone)}
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600"
+                    >
+                      <Phone className="h-4 w-4 mr-1" />
+                      Call
+                    </Button>
+                    <Button
+                      onClick={() => handleWhatsApp(pharmacy.phone, pharmacy.name)}
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 hover:bg-green-50 hover:text-green-600 hover:border-green-600"
+                    >
+                      <MessageCircle className="h-4 w-4 mr-1" />
+                      WhatsApp
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -573,9 +610,9 @@ export default function EmergencyPage() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <Image src="/logo.png" alt="Health Hub MW Logo" width={32} height={32} className="object-contain" />
+                <Image src="/health-hub-logo.svg" alt="HEALTH-HUB MW Logo" width={32} height={32} className="object-contain" />
                 <div>
-                  <h3 className="text-lg font-bold">Blantyre Health Hub</h3>
+                  <h3 className="text-lg font-bold">HEALTH-HUB MW</h3>
                   <p className="text-xs text-gray-400">Emergency Services</p>
                 </div>
               </div>

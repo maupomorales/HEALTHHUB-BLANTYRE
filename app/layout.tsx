@@ -16,8 +16,14 @@ export const metadata: Metadata = {
     { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
   ],
   icons: {
-    icon: [{ url: '/logo.png', type: 'image/png' }],
-    apple: [{ url: '/logo.png' }],
+    icon: [
+      { url: '/health-hub-logo.svg', type: 'image/svg+xml' },
+      { url: '/logo.png', type: 'image/png' }
+    ],
+    apple: [
+      { url: '/health-hub-logo.svg', type: 'image/svg+xml' },
+      { url: '/logo.png' }
+    ],
   },
   manifest: '/manifest.webmanifest',
   formatDetection: { telephone: true },

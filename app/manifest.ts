@@ -12,6 +12,12 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: '#0a0a0a',
     icons: [
       {
+        src: '/health-hub-logo.svg',
+        sizes: 'any',
+        type: 'image/svg+xml',
+        purpose: 'any maskable',
+      },
+      {
         src: '/logo.png',
         sizes: '192x192',
         type: 'image/png',
