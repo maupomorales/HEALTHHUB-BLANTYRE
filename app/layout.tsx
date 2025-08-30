@@ -1,17 +1,13 @@
 import type React from "react"
 import type { Metadata } from "next"
+import { Inter } from "next/font/google"
 import "./globals.css"
 
+const inter = Inter({ subsets: ["latin"] })
+
 export const metadata: Metadata = {
-  title: "Blantyre Health Hub - Your Healthcare Directory",
-  description: "Find healthcare providers, emergency services, and health resources in Blantyre, Malawi",
-  keywords: "healthcare, Blantyre, Malawi, doctors, hospitals, emergency services",
-  authors: [{ name: "Blantyre Health Hub" }],
-  openGraph: {
-    title: "Blantyre Health Hub",
-    description: "Your trusted healthcare directory in Blantyre, Malawi",
-    type: "website",
-  },
+  title: "Blantyre Health Hub",
+  description: "Your trusted healthcare directory for Blantyre, Malawi",
     generator: 'v0.app'
 }
 
@@ -22,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-background font-sans antialiased">{children}</body>
+      <body className={inter.className}>{children}</body>
     </html>
   )
 }
