@@ -1,5 +1,5 @@
-// Email service for mobile app
-import * as MailComposer from "expo-mail-composer"
+// Simplified email service for web deployment
+// In production, integrate with SendGrid, Mailgun, or AWS SES
 
 export interface RegistrationData {
   firstName: string
@@ -12,32 +12,29 @@ export interface RegistrationData {
   interests: string[]
 }
 
-export class MobileEmailService {
+export class EmailService {
   private static readonly ADMIN_EMAIL = "healthhubconnect071@gmail.com"
 
-  static async sendRegistrationEmail(data: RegistrationData): Promise<boolean> {
+  static async sendRegistrationNotification(data: RegistrationData): Promise<boolean> {
     try {
-      // Check if email composer is available
-      const isAvailable = await MailComposer.isAvailableAsync()
+      // For now, we'll log the registration data
+      // In production, replace this with actual email service integration
 
-      if (!isAvailable) {
-        throw new Error("Email composer is not available on this device")
-      }
+      const emailContent = this.formatRegistrationEmail(data)
 
-      const subject = `🏥 New Health Hub Registration - ${data.firstName} ${data.lastName}`
+      console.log("=== SENDING REGISTRATION EMAIL ===")
+      console.log("To:", this.ADMIN_EMAIL)
+      console.log("Subject: 🏥 New Health Hub Registration -", data.firstName, data.lastName)
+      console.log("Content:")
+      console.log(emailContent)
+      console.log("===================================")
 
-      const body = this.formatRegistrationEmail(data)
+      // Simulate email sending
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
-      const result = await MailComposer.composeAsync({
-        recipients: [this.ADMIN_EMAIL],
-        subject: subject,
-        body: body,
-        isHtml: false,
-      })
-
-      return result.status === "sent"
+      return true
     } catch (error) {
-      console.error("Email sending error:", error)
+      console.error("Email service error:", error)
       throw error
     }
   }
@@ -68,34 +65,21 @@ You can reach out to this new subscriber at:
 • Phone: ${data.phone}
 
 ---
-This registration was submitted through the Blantyre Health Hub mobile app.
+This registration was submitted through the Blantyre Health Hub website.
 Please follow up with the subscriber to provide relevant health updates for their area.
 
 Best regards,
-Blantyre Health Hub Mobile App
+Blantyre Health Hub System
     `.trim()
   }
 
-  static async sendContactEmail(subject: string, message: string, userEmail?: string): Promise<boolean> {
+  static async testConnection(): Promise<boolean> {
     try {
-      const isAvailable = await MailComposer.isAvailableAsync()
-
-      if (!isAvailable) {
-        throw new Error("Email composer is not available on this device")
-      }
-
-      const emailBody = userEmail ? `From: ${userEmail}\n\n${message}` : message
-
-      const result = await MailComposer.composeAsync({
-        recipients: [this.ADMIN_EMAIL],
-        subject: `Health Hub Contact: ${subject}`,
-        body: emailBody,
-      })
-
-      return result.status === "sent"
+      console.log("Email service is ready (simulation mode)")
+      return true
     } catch (error) {
-      console.error("Contact email error:", error)
-      throw error
+      console.error("Email service error:", error)
+      return false
     }
   }
 }

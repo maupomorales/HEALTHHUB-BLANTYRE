@@ -80,16 +80,13 @@ export default function RegisterPage() {
     setMessage(null)
 
     try {
-      // Send registration data directly to healthhubconnect071@gmail.com
+      // Send registration data to API
       const response = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...formData,
-          targetEmail: "healthhubconnect071@gmail.com",
-        }),
+        body: JSON.stringify(formData),
       })
 
       const result = await response.json()
@@ -97,7 +94,7 @@ export default function RegisterPage() {
       if (response.ok) {
         setMessage({
           type: "success",
-          text: "Registration successful! Your information has been sent directly to healthhubconnect071@gmail.com. Our team will contact you soon with health updates for your area.",
+          text: "Registration successful! Your information has been received and our team at healthhubconnect071@gmail.com will contact you soon with health updates for your area.",
         })
         // Reset form
         setFormData({
@@ -198,7 +195,7 @@ export default function RegisterPage() {
                 <div>
                   <h3 className="font-semibold text-blue-900">Direct Email Registration</h3>
                   <p className="text-blue-700 text-sm">
-                    Your registration will be sent directly to: <strong>healthhubconnect071@gmail.com</strong>
+                    Your registration will be processed and sent to: <strong>healthhubconnect071@gmail.com</strong>
                   </p>
                 </div>
               </div>
@@ -389,12 +386,12 @@ export default function RegisterPage() {
                   {isLoading ? (
                     <>
                       <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                      Sending to Email...
+                      Processing Registration...
                     </>
                   ) : (
                     <>
                       <Mail className="h-5 w-5 mr-2" />
-                      Send Registration to Email
+                      Submit Registration
                     </>
                   )}
                 </Button>

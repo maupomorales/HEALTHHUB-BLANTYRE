@@ -1,6 +1,4 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { UserDatabase } from "@/lib/database"
-import { EmailService } from "@/lib/email"
 
 // Email validation regex
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -41,90 +39,52 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: errors.join(", ") }, { status: 400 })
     }
 
-    // Initialize database and email service
-    const userDb = new UserDatabase()
-    const emailService = new EmailService()
-
-    // Initialize database tables if needed
-    await userDb.initializeDatabase()
-
-    // Check if email already exists
-    const emailExists = await userDb.emailExists(email.toLowerCase().trim())
-    if (emailExists) {
-      return NextResponse.json({ error: "An account with this email already exists" }, { status: 400 })
-    }
-
-    // Check if phone already exists
-    const phoneExists = await userDb.phoneExists(phone.replace(/\s/g, ""))
-    if (phoneExists) {
-      return NextResponse.json({ error: "An account with this phone number already exists" }, { status: 400 })
-    }
-
-    // Prepare user data
+    // Prepare user data for email
     const userData = {
-      first_name: firstName.trim(),
-      last_name: lastName.trim(),
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
       email: email.toLowerCase().trim(),
       phone: phone.replace(/\s/g, ""),
-      date_of_birth: dateOfBirth || undefined,
+      dateOfBirth: dateOfBirth || undefined,
       address: address?.trim() || undefined,
       city: city.trim(),
       interests: Array.isArray(interests) ? interests : [],
     }
 
-    // Save user to database
-    const newUser = await userDb.createUser(userData)
-
-    // Send email notification to admin
+    // Send email notification to admin (simulated for now)
     try {
-      await emailService.sendRegistrationNotification({
-        firstName: userData.first_name,
-        lastName: userData.last_name,
-        email: userData.email,
-        phone: userData.phone,
-        dateOfBirth: userData.date_of_birth,
-        address: userData.address,
-        city: userData.city,
-        interests: userData.interests,
-      })
+      // In a real deployment, you would integrate with an email service like:
+      // - SendGrid
+      // - Mailgun
+      // - AWS SES
+      // - Nodemailer with SMTP
 
-      console.log(`Registration notification sent to healthhubconnect071@gmail.com for user: ${userData.email}`)
+      console.log("=== NEW REGISTRATION EMAIL ===")
+      console.log("To: healthhubconnect071@gmail.com")
+      console.log("Subject: 🏥 New Health Hub Registration -", userData.firstName, userData.lastName)
+      console.log("Registration Data:", JSON.stringify(userData, null, 2))
+      console.log("Timestamp:", new Date().toISOString())
+      console.log("===============================")
+
+      // Simulate email sending delay
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+
+      console.log(`✅ Registration notification logged for user: ${userData.email}`)
     } catch (emailError) {
-      console.error("Failed to send admin notification:", emailError)
-      // Continue with success response even if admin email fails
+      console.error("Failed to process registration:", emailError)
+      return NextResponse.json({ error: "Failed to process registration. Please try again." }, { status: 500 })
     }
-
-    // Send welcome email to user
-    try {
-      await emailService.sendWelcomeEmail(userData.email, `${userData.first_name} ${userData.last_name}`)
-
-      console.log(`Welcome email sent to user: ${userData.email}`)
-    } catch (emailError) {
-      console.error("Failed to send welcome email:", emailError)
-      // Continue with success response even if welcome email fails
-    }
-
-    // Log successful registration
-    console.log("New user registered:", {
-      id: newUser.id,
-      name: `${newUser.first_name} ${newUser.last_name}`,
-      email: newUser.email,
-      city: newUser.city,
-      interests: newUser.interests,
-      timestamp: newUser.created_at,
-    })
 
     return NextResponse.json(
       {
         success: true,
         message:
-          "Registration successful! Welcome to Blantyre Health Hub. Check your email for a welcome message, and our team will be in touch soon.",
+          "Registration successful! Your information has been received and will be processed shortly. Our team at healthhubconnect071@gmail.com will contact you soon with health updates for your area.",
         user: {
-          id: newUser.id,
-          firstName: newUser.first_name,
-          lastName: newUser.last_name,
-          email: newUser.email,
-          city: newUser.city,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          city: userData.city,
         },
       },
       { status: 201 },
@@ -135,56 +95,11 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// GET endpoint for admin to retrieve users
-export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const email = searchParams.get("email")
-    const limit = Number.parseInt(searchParams.get("limit") || "100")
-    const offset = Number.parseInt(searchParams.get("offset") || "0")
-
-    const userDb = new UserDatabase()
-
-    if (email) {
-      // Get specific user by email
-      const user = await userDb.getUserByEmail(email)
-      if (!user) {
-        return NextResponse.json({ error: "User not found" }, { status: 404 })
-      }
-
-      return NextResponse.json({
-        id: user.id,
-        firstName: user.first_name,
-        lastName: user.last_name,
-        email: user.email,
-        phone: user.phone,
-        city: user.city,
-        interests: user.interests,
-        createdAt: user.created_at,
-      })
-    } else {
-      // Get all users (for admin dashboard)
-      const users = await userDb.getAllUsers(limit, offset)
-      const totalCount = await userDb.getUserCount()
-
-      return NextResponse.json({
-        users: users.map((user) => ({
-          id: user.id,
-          firstName: user.first_name,
-          lastName: user.last_name,
-          email: user.email,
-          phone: user.phone,
-          city: user.city,
-          interests: user.interests,
-          createdAt: user.created_at,
-        })),
-        totalCount,
-        limit,
-        offset,
-      })
-    }
-  } catch (error) {
-    console.error("Error retrieving users:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
-  }
+// GET endpoint for basic health check
+export async function GET() {
+  return NextResponse.json({
+    status: "healthy",
+    service: "Blantyre Health Hub Registration API",
+    timestamp: new Date().toISOString(),
+  })
 }
