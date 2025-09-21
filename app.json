@@ -1,15 +1,15 @@
 {
-  "name": "health-hub-mobile",
+  "name": "HealthHubBlantyre",
+  "displayName": "Health Hub Blantyre",
   "version": "1.0.0",
-  "private": true,
+  "description": "Your Complete Health Directory for Blantyre, Malawi",
+  "main": "index.js",
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "build-android": "cd android && ./gradlew assembleRelease",
-    "build-android-debug": "cd android && ./gradlew assembleDebug"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
     "react": "18.2.0",
@@ -30,11 +30,7 @@
     "react-native-paper": "^5.12.3",
     "react-native-elements": "^3.4.3",
     "react-native-async-storage": "^1.19.5",
-    "react-native-device-info": "^10.11.0",
-    "@react-native-firebase/analytics": "^19.0.0",
-    "@react-native-firebase/app": "^19.0.0",
-    "@react-native-async-storage/async-storage": "^1.21.0",
-    "react-native-flash-message": "^0.4.2"
+    "react-native-device-info": "^10.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -60,3 +56,4 @@
     "node": ">=16"
   }
 }
+
