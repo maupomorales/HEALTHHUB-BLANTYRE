@@ -8,26 +8,150 @@ datasource db {
 }
 
 model Provider {
+  id          Int      @id @default(autoincrement())
+  name        String
+  type        String
+  rating      Float    @default(0)
+  address     String
+  phone       String
+  hours       String?
+  services    String[]
+  area        String
+  isVerified  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  website     String?
+  email       String?
+  description String?
+  images      String[]
+  coordinates Json?    // { latitude: number, longitude: number }
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  reviews     Review[]
+  bookings    Booking[]
+  owner       User?    @relation("ProviderOwner")
+  ownerId     Int?
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String   @unique
+  phone       String?
+  role        UserRole @default(CLIENT)
+  isActive    Boolean  @default(true)
+  avatar      String?
+  preferences Json?    // User preferences and settings
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  ownedProviders Provider[] @relation("ProviderOwner")
+  reviews        Review[]
+  bookings       Booking[]
+  messages       ContactMessage[]
+}
+
+model Review {
   id        Int      @id @default(autoincrement())
-  name      String
-  type      String
-  rating    Float    @default(0)
-  address   String
-  phone     String
-  hours     String?
-  services  String[]
-  area      String
+  rating    Int      // 1-5 stars
+  comment   String?
+  isVerified Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  // Relations
+  provider  Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  providerId Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+}
+
+model Booking {
+  id          Int           @id @default(autoincrement())
+  date        DateTime
+  time        String
+  status      BookingStatus @default(PENDING)
+  notes       String?
+  serviceType String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  
+  // Relations
+  provider    Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  providerId  Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int
 }
 
 model ContactMessage {
   id        Int      @id @default(autoincrement())
   name      String
   email     String
+  phone     String?
   subject   String
   message   String
+  status    MessageStatus @default(UNREAD)
+  response  String?
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
+}
+
+model EmergencyContact {
+  id          Int      @id @default(autoincrement())
+  name        String
+  number      String
+  type        String   // "police", "fire", "ambulance", "hospital"
+  description String?
+  isActive    Boolean  @default(true)
+  priority    Int      @default(1) // 1 = highest priority
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model HealthTip {
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String
+  category    String   // "emergency", "prevention", "general"
+  isActive    Boolean  @default(true)
+  priority    Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AppSettings {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique
+  value       String
+  description String?
+  updatedAt   DateTime @updatedAt
+}
+
+// Enums
+enum UserRole {
+  CLIENT
+  PROVIDER
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum MessageStatus {
+  UNREAD
+  READ
+  REPLIED
+  CLOSED
 }
 
 

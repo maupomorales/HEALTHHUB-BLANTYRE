@@ -11,6 +11,9 @@ import {
 } from 'react-native';
 import { Card, Button, Badge, Chip } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import analytics from '../services/analytics';
+import errorHandler from '../services/errorHandler';
+import offlineStorage from '../services/offlineStorage';
 
 // Service data (same as web version)
 const serviceData = {
@@ -335,36 +338,91 @@ const SearchScreen: React.FC = () => {
   const [results, setResults] = useState<ServiceData>({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const handlePhoneCall = (phone: string) => {
-    Linking.openURL(`tel:${phone}`);
+  useEffect(() => {
+    // Track screen view
+    analytics.trackScreenView('SearchScreen', 'SearchScreen');
+  }, []);
+
+  const handlePhoneCall = async (phone: string) => {
+    try {
+      await Linking.openURL(`tel:${phone}`);
+      await analytics.trackContactAction('Search Result', 'call');
+    } catch (error) {
+      errorHandler.handleError(error as Error, {
+        component: 'SearchScreen',
+        action: 'PHONE_CALL',
+      });
+    }
   };
 
-  const handleWhatsApp = (phone: string, serviceName: string) => {
-    const message = `Hello! I'm interested in your services at ${serviceName}. Can you please provide more information?`;
-    const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
-    Linking.openURL(whatsappUrl);
+  const handleWhatsApp = async (phone: string, serviceName: string) => {
+    try {
+      const message = `Hello! I'm interested in your services at ${serviceName}. Can you please provide more information?`;
+      const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
+      await Linking.openURL(whatsappUrl);
+      await analytics.trackContactAction(serviceName, 'whatsapp');
+    } catch (error) {
+      errorHandler.handleError(error as Error, {
+        component: 'SearchScreen',
+        action: 'WHATSAPP_MESSAGE',
+      });
+    }
   };
 
-  const handleSearch = useCallback(() => {
+  const handleSearch = useCallback(async () => {
     setIsLoading(true);
 
-    // Simulate API call delay
-    setTimeout(() => {
-      const matchedAreas = Object.keys(serviceData).filter((area) =>
-        area.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-
-      if (matchedAreas.length > 0) {
-        const searchResults: ServiceData = {};
-        matchedAreas.forEach((area) => {
-          searchResults[area] = serviceData[area as keyof typeof serviceData];
-        });
-        setResults(searchResults);
-      } else {
-        setResults({});
+    try {
+      // Check cache first
+      const cachedResults = await offlineStorage.getCachedHealthcareProviders(searchQuery);
+      if (cachedResults) {
+        setResults({ [searchQuery]: cachedResults });
+        setIsLoading(false);
+        await analytics.trackSearch(searchQuery, cachedResults.length);
+        return;
       }
+
+      // Simulate API call delay
+      setTimeout(async () => {
+        try {
+          const matchedAreas = Object.keys(serviceData).filter((area) =>
+            area.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+
+          if (matchedAreas.length > 0) {
+            const searchResults: ServiceData = {};
+            matchedAreas.forEach((area) => {
+              searchResults[area] = serviceData[area as keyof typeof serviceData];
+            });
+            setResults(searchResults);
+            
+            // Cache the results
+            await offlineStorage.cacheHealthcareProviders(
+              Object.values(searchResults).flat(),
+              searchQuery
+            );
+            
+            await analytics.trackSearch(searchQuery, Object.values(searchResults).flat().length);
+          } else {
+            setResults({});
+            await analytics.trackSearch(searchQuery, 0);
+          }
+        } catch (error) {
+          errorHandler.handleError(error as Error, {
+            component: 'SearchScreen',
+            action: 'SEARCH',
+          });
+        } finally {
+          setIsLoading(false);
+        }
+      }, 500);
+    } catch (error) {
+      errorHandler.handleError(error as Error, {
+        component: 'SearchScreen',
+        action: 'SEARCH_INITIALIZATION',
+      });
       setIsLoading(false);
-    }, 500);
+    }
   }, [searchQuery]);
 
   useEffect(() => {

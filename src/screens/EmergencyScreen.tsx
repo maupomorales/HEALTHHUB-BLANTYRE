@@ -10,10 +10,25 @@ import {
 } from 'react-native';
 import { Card, Button, Badge } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import analytics from '../services/analytics';
+import errorHandler from '../services/errorHandler';
 
 const EmergencyScreen: React.FC = () => {
-  const handleEmergencyCall = (number: string) => {
-    Linking.openURL(`tel:${number}`);
+  React.useEffect(() => {
+    // Track screen view
+    analytics.trackScreenView('EmergencyScreen', 'EmergencyScreen');
+  }, []);
+
+  const handleEmergencyCall = async (number: string) => {
+    try {
+      await Linking.openURL(`tel:${number}`);
+      await analytics.trackEmergencyCall('Emergency Service', number);
+    } catch (error) {
+      errorHandler.handleError(error as Error, {
+        component: 'EmergencyScreen',
+        action: 'EMERGENCY_CALL',
+      });
+    }
   };
 
   const handleWhatsApp = (phone: string, serviceName: string) => {

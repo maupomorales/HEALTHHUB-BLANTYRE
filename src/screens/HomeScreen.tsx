@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,18 +13,60 @@ import { Card, Button, Badge } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import analytics from '../services/analytics';
+import errorHandler from '../services/errorHandler';
+import offlineStorage from '../services/offlineStorage';
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation();
 
-  const handlePhoneCall = (phone: string) => {
-    Linking.openURL(`tel:${phone}`);
+  useEffect(() => {
+    // Track screen view
+    analytics.trackScreenView('HomeScreen', 'HomeScreen');
+    
+    // Load cached data if available
+    loadCachedData();
+  }, []);
+
+  const loadCachedData = async () => {
+    try {
+      const cachedProviders = await offlineStorage.getCachedHealthcareProviders('featured');
+      if (cachedProviders) {
+        // Use cached data if available
+        console.log('Loaded cached providers:', cachedProviders.length);
+      }
+    } catch (error) {
+      errorHandler.handleError(error as Error, {
+        component: 'HomeScreen',
+        action: 'LOAD_CACHED_DATA',
+      });
+    }
   };
 
-  const handleWhatsApp = (phone: string, serviceName: string) => {
-    const message = `Hello! I'm interested in your services at ${serviceName}. Can you please provide more information?`;
-    const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
-    Linking.openURL(whatsappUrl);
+  const handlePhoneCall = async (phone: string) => {
+    try {
+      await Linking.openURL(`tel:${phone}`);
+      await analytics.trackContactAction('Featured Provider', 'call');
+    } catch (error) {
+      errorHandler.handleError(error as Error, {
+        component: 'HomeScreen',
+        action: 'PHONE_CALL',
+      });
+    }
+  };
+
+  const handleWhatsApp = async (phone: string, serviceName: string) => {
+    try {
+      const message = `Hello! I'm interested in your services at ${serviceName}. Can you please provide more information?`;
+      const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
+      await Linking.openURL(whatsappUrl);
+      await analytics.trackContactAction(serviceName, 'whatsapp');
+    } catch (error) {
+      errorHandler.handleError(error as Error, {
+        component: 'HomeScreen',
+        action: 'WHATSAPP_MESSAGE',
+      });
+    }
   };
 
   const featuredProviders = [
