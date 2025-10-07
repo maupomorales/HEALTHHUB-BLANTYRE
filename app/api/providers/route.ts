@@ -1,49 +1,91 @@
-import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { NextRequest, NextResponse } from 'next/server';
+import clientManagement from '../../../src/services/clientManagement';
+import { prisma } from '../../../lib/prisma';
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url)
-  const q = searchParams.get('q')?.toLowerCase() || ''
-  const area = searchParams.get('area') || undefined
-  const type = searchParams.get('type') || undefined
-
-  const providers = await prisma.provider.findMany({
-    where: {
-      AND: [
-        q
-          ? {
-              OR: [
-                { name: { contains: q, mode: 'insensitive' } },
-                { address: { contains: q, mode: 'insensitive' } },
-                { area: { contains: q, mode: 'insensitive' } },
-              ],
-            }
-          : {},
-        area ? { area: { equals: area } } : {},
-        type ? { type: { equals: type } } : {},
-      ],
-    },
-    orderBy: { rating: 'desc' },
-    take: 100,
-  })
-
-  return NextResponse.json({ providers })
-}
-
-export async function POST(request: Request) {
+// GET /api/providers - Get all providers
+export async function GET(request: NextRequest) {
   try {
-    const body = await request.json()
-    const { name, type, rating = 0, address, phone, hours, services = [], area } = body || {}
-    if (!name || !type || !address || !phone || !area) {
-      return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
-    }
-    const created = await prisma.provider.create({
-      data: { name, type, rating, address, phone, hours, services, area },
-    })
-    return NextResponse.json(created, { status: 201 })
-  } catch (e) {
-    return NextResponse.json({ error: 'Invalid payload' }, { status: 400 })
+    const { searchParams } = new URL(request.url);
+    const area = searchParams.get('area');
+    const type = searchParams.get('type');
+    const isVerified = searchParams.get('isVerified');
+    const isActive = searchParams.get('isActive');
+
+    const providers = await prisma.provider.findMany({
+      where: {
+        ...(area && { area: { contains: area, mode: 'insensitive' } }),
+        ...(type && { type }),
+        ...(isVerified !== null && { isVerified: isVerified === 'true' }),
+        ...(isActive !== null && { isActive: isActive === 'true' }),
+      },
+      include: {
+        reviews: true,
+        owner: true,
+        bookings: true,
+      },
+      orderBy: { rating: 'desc' },
+    });
+
+    return NextResponse.json({ success: true, data: providers });
+  } catch (error) {
+    console.error('Error fetching providers:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch providers' },
+      { status: 500 }
+    );
   }
 }
 
+// POST /api/providers - Create new provider
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const {
+      name,
+      type,
+      address,
+      phone,
+      hours,
+      services,
+      area,
+      website,
+      email,
+      description,
+      images,
+      coordinates,
+      ownerId,
+    } = body;
 
+    // Validate required fields
+    if (!name || !type || !address || !phone || !area) {
+      return NextResponse.json(
+        { success: false, error: 'Name, type, address, phone, and area are required' },
+        { status: 400 }
+      );
+    }
+
+    const provider = await clientManagement.createProvider({
+      name,
+      type,
+      address,
+      phone,
+      hours,
+      services: services || [],
+      area,
+      website,
+      email,
+      description,
+      images,
+      coordinates,
+      ownerId,
+    });
+
+    return NextResponse.json({ success: true, data: provider }, { status: 201 });
+  } catch (error) {
+    console.error('Error creating provider:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to create provider' },
+      { status: 500 }
+    );
+  }
+}
