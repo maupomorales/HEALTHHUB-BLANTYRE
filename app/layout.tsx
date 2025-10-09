@@ -7,8 +7,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Blantyre Health Hub - Your Healthcare Directory",
-  description: "Find trusted healthcare providers in Blantyre, Malawi. Connect with quality healthcare services.",
-  keywords: "healthcare, Blantyre, Malawi, hospitals, doctors, pharmacies, clinics",
+  description: "Find trusted healthcare providers in Blantyre, Malawi",
     generator: 'v0.app'
 }
 
