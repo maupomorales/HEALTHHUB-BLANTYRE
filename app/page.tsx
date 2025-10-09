@@ -3,7 +3,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Heart, Search, Phone, MapPin, Clock, Star, Users, Shield, ArrowRight } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 
 export default function HomePage() {
   const providers = [
@@ -15,7 +14,6 @@ export default function HomePage() {
       rating: 4.8,
       reviews: 245,
       services: ["Emergency Care", "Surgery", "Maternity"],
-      image: "/modern-hospital-exterior.png",
     },
     {
       id: 2,
@@ -25,7 +23,6 @@ export default function HomePage() {
       rating: 4.6,
       reviews: 128,
       services: ["Prescription", "OTC Medicines", "Health Consultation"],
-      image: "/pharmacy-interior.png",
     },
     {
       id: 3,
@@ -35,7 +32,6 @@ export default function HomePage() {
       rating: 4.7,
       reviews: 89,
       services: ["General Practice", "Pediatrics", "Vaccinations"],
-      image: "/modern-clinic-waiting-area.png",
     },
   ]
 
@@ -46,7 +42,9 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
-              <Image src="/logo.png" alt="Health Hub Logo" width={40} height={40} className="object-contain" />
+              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                <Heart className="h-6 w-6 text-white" />
+              </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-900">BLANTYRE HEALTH HUB</h1>
                 <p className="text-xs text-gray-600">Your Trusted Healthcare Directory</p>
@@ -148,9 +146,6 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-8">
             {providers.map((provider) => (
               <Card key={provider.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="aspect-video relative">
-                  <Image src={provider.image || "/placeholder.svg"} alt={provider.name} fill className="object-cover" />
-                </div>
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div>
@@ -227,7 +222,9 @@ export default function HomePage() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <Image src="/logo.png" alt="Health Hub Logo" width={32} height={32} className="object-contain" />
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <Heart className="h-5 w-5 text-white" />
+                </div>
                 <div>
                   <h3 className="text-lg font-bold">Blantyre Health Hub</h3>
                   <p className="text-xs text-gray-400">Your Health Directory</p>

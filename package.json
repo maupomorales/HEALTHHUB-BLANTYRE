@@ -9,10 +9,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "@expo/metro-runtime": "latest",
     "@expo/vector-icons": "latest",
     "@radix-ui/react-label": "latest",
     "@radix-ui/react-slot": "latest",
     "@react-navigation/drawer": "latest",
+    "@testing-library/react-native": "latest",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "expo": "latest",
@@ -30,11 +32,14 @@
     "react": "^18",
     "react-dom": "^18",
     "react-native": "latest",
+    "react-native-gesture-handler": "latest",
     "react-native-paper": "latest",
     "react-native-reanimated": "latest",
     "react-native-safe-area-context": "latest",
     "react-native-screens": "latest",
     "react-native-toast-message": "latest",
+    "react-native-web": "latest",
+    "react-server-dom-webpack": "latest",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7"
   },

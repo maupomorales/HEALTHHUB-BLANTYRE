@@ -24,7 +24,6 @@ export default function ProviderDetailPage() {
       reviews: 245,
       phone: "+265 1 870 411",
       email: "info@adventisthospital.mw",
-      website: "www.adventisthospital.mw",
       hours: "24/7",
       services: ["Emergency Care", "Surgery", "Maternity", "Pediatrics", "Cardiology", "Orthopedics"],
       image: "/modern-hospital-exterior.png",
@@ -79,7 +78,7 @@ export default function ProviderDetailPage() {
     },
   }
 
-  const provider = providers[id as string]
+  const provider = providers[id as string] || providers["1"]
 
   if (!provider) {
     return (
