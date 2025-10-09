@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { Search, MapPin, Star, Phone, Clock, ArrowRight, Heart } from "lucide-react"
+import { Heart, Search, MapPin, Star, Phone, Clock, ArrowRight, Filter } from "lucide-react"
 import Link from "next/link"
 
 export default function SearchPage() {
@@ -13,8 +13,8 @@ export default function SearchPage() {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [selectedArea, setSelectedArea] = useState("All Areas")
 
-  const categories = ["All", "Hospital", "Clinic", "Pharmacy", "Dental", "Eye Care", "Lab"]
-  const areas = ["All Areas", "Blantyre City", "Limbe", "Chichiri", "Mandala", "Chirimba", "Ndirande"]
+  const categories = ["All", "Hospital", "Clinic", "Pharmacy", "Dentist", "Lab", "Optician"]
+  const areas = ["All Areas", "Blantyre City", "Limbe", "Chichiri", "Mandala", "Bangwe", "Chilomoni", "Ndirande"]
 
   const providers = [
     {
@@ -24,10 +24,9 @@ export default function SearchPage() {
       location: "Blantyre City",
       rating: 4.8,
       reviews: 245,
-      phone: "+265 1 870 222",
+      services: ["Emergency Care", "Surgery", "Maternity", "Laboratory"],
+      phone: "+265 1 870 444",
       hours: "24/7",
-      services: ["Emergency Care", "Surgery", "Maternity", "Pediatrics"],
-      distance: "2.3 km",
     },
     {
       id: 2,
@@ -36,10 +35,9 @@ export default function SearchPage() {
       location: "Limbe",
       rating: 4.6,
       reviews: 128,
-      phone: "+265 1 844 555",
-      hours: "8:00 AM - 8:00 PM",
       services: ["Prescription", "OTC Medicines", "Health Consultation"],
-      distance: "3.1 km",
+      phone: "+265 1 840 222",
+      hours: "Mon-Sat: 8AM-8PM",
     },
     {
       id: 3,
@@ -48,53 +46,47 @@ export default function SearchPage() {
       location: "Chichiri",
       rating: 4.7,
       reviews: 89,
-      phone: "+265 1 876 333",
-      hours: "8:00 AM - 6:00 PM",
       services: ["General Practice", "Pediatrics", "Vaccinations"],
-      distance: "1.5 km",
+      phone: "+265 999 123 456",
+      hours: "Mon-Fri: 8AM-5PM",
     },
     {
       id: 4,
-      name: "Smile Dental Care",
-      type: "Dental",
+      name: "Mandala Dental Care",
+      type: "Dentist",
       location: "Mandala",
-      rating: 4.9,
-      reviews: 156,
-      phone: "+265 1 822 444",
-      hours: "9:00 AM - 5:00 PM",
-      services: ["General Dentistry", "Orthodontics", "Cosmetic"],
-      distance: "2.8 km",
+      rating: 4.5,
+      reviews: 67,
+      services: ["Teeth Cleaning", "Fillings", "Root Canal", "Cosmetic"],
+      phone: "+265 888 234 567",
+      hours: "Mon-Sat: 9AM-6PM",
     },
     {
       id: 5,
-      name: "Vision Plus Opticians",
-      type: "Eye Care",
+      name: "MLW Clinical Research",
+      type: "Lab",
       location: "Blantyre City",
-      rating: 4.5,
-      reviews: 67,
-      phone: "+265 1 820 666",
-      hours: "8:30 AM - 5:30 PM",
-      services: ["Eye Tests", "Glasses", "Contact Lenses"],
-      distance: "2.0 km",
+      rating: 4.9,
+      reviews: 156,
+      services: ["Blood Tests", "X-Ray", "Ultrasound", "CT Scan"],
+      phone: "+265 1 876 543",
+      hours: "Mon-Fri: 7AM-4PM",
     },
     {
       id: 6,
-      name: "HealthLab Diagnostics",
-      type: "Lab",
+      name: "Vision Plus Opticians",
+      type: "Optician",
       location: "Limbe",
-      rating: 4.6,
-      reviews: 94,
-      phone: "+265 1 845 777",
-      hours: "7:00 AM - 4:00 PM",
-      services: ["Blood Tests", "X-Ray", "Ultrasound"],
-      distance: "3.5 km",
+      rating: 4.4,
+      reviews: 92,
+      services: ["Eye Tests", "Glasses", "Contact Lenses", "Eye Surgery"],
+      phone: "+265 997 765 432",
+      hours: "Mon-Sat: 9AM-5PM",
     },
   ]
 
   const filteredProviders = providers.filter((provider) => {
-    const matchesSearch =
-      provider.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      provider.services.some((service) => service.toLowerCase().includes(searchQuery.toLowerCase()))
+    const matchesSearch = provider.name.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesCategory = selectedCategory === "All" || provider.type === selectedCategory
     const matchesArea = selectedArea === "All Areas" || provider.location === selectedArea
     return matchesSearch && matchesCategory && matchesArea
@@ -116,8 +108,8 @@ export default function SearchPage() {
               </div>
             </Link>
             <nav className="hidden md:flex space-x-8">
-              <Link href="/" className="text-gray-700 hover:text-blue-600 font-medium">
-                Home
+              <Link href="/search" className="text-blue-600 font-medium">
+                Find Providers
               </Link>
               <Link href="/emergency" className="text-gray-700 hover:text-blue-600 font-medium">
                 Emergency
@@ -132,37 +124,39 @@ export default function SearchPage() {
 
       {/* Search Section */}
       <section className="py-12 px-4 bg-gradient-to-r from-blue-600 to-green-600 text-white">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl font-bold mb-2">Find Healthcare Providers</h1>
-          <p className="text-lg mb-6">Search for trusted healthcare services in Blantyre</p>
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-4xl font-bold mb-4 text-center">Find Healthcare Providers</h1>
+          <p className="text-lg mb-8 text-center">Search from over 50 verified healthcare providers in Blantyre</p>
 
           <div className="bg-white rounded-lg p-4 shadow-lg">
-            <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex gap-2">
               <div className="flex-1">
                 <Input
-                  type="text"
-                  placeholder="Search by name or service..."
+                  placeholder="Search by name, service, or specialty..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="h-12"
+                  className="h-12 text-gray-900"
                 />
               </div>
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
-                <Search className="h-5 w-5 mr-2" />
-                Search
+              <Button size="lg" className="px-8">
+                <Search className="h-5 w-5" />
               </Button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Filters and Results */}
-      <section className="py-8 px-4">
+      {/* Filters */}
+      <section className="py-8 px-4 bg-white border-b">
         <div className="max-w-7xl mx-auto">
-          {/* Filters */}
-          <div className="mb-8">
-            <div className="mb-4">
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Category</h3>
+          <div className="flex items-center gap-4 mb-4">
+            <Filter className="h-5 w-5 text-gray-600" />
+            <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <p className="text-sm font-medium text-gray-700 mb-2">Category</p>
               <div className="flex flex-wrap gap-2">
                 {categories.map((category) => (
                   <Button
@@ -178,7 +172,7 @@ export default function SearchPage() {
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Area</h3>
+              <p className="text-sm font-medium text-gray-700 mb-2">Area</p>
               <div className="flex flex-wrap gap-2">
                 {areas.map((area) => (
                   <Button
@@ -193,70 +187,106 @@ export default function SearchPage() {
               </div>
             </div>
           </div>
-
-          {/* Results */}
-          <div>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">{filteredProviders.length} Providers Found</h2>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredProviders.map((provider) => (
-                <Card key={provider.id} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex justify-between items-start mb-2">
-                      <Badge variant="secondary">{provider.type}</Badge>
-                      <div className="flex items-center text-sm text-gray-600">
-                        <MapPin className="h-4 w-4 mr-1" />
-                        {provider.distance}
-                      </div>
-                    </div>
-                    <CardTitle className="text-lg">{provider.name}</CardTitle>
-                    <CardDescription className="flex items-center">
-                      <MapPin className="h-4 w-4 mr-1" />
-                      {provider.location}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      <div className="flex items-center">
-                        <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
-                        <span className="font-semibold">{provider.rating}</span>
-                        <span className="text-gray-600 ml-1">({provider.reviews} reviews)</span>
-                      </div>
-
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Phone className="h-4 w-4 mr-2" />
-                        {provider.phone}
-                      </div>
-
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Clock className="h-4 w-4 mr-2" />
-                        {provider.hours}
-                      </div>
-
-                      <div className="flex flex-wrap gap-2 pt-2">
-                        {provider.services.slice(0, 3).map((service) => (
-                          <Badge key={service} variant="outline" className="text-xs">
-                            {service}
-                          </Badge>
-                        ))}
-                      </div>
-
-                      <Link href={`/provider/${provider.id}`}>
-                        <Button className="w-full mt-4">
-                          View Details
-                          <ArrowRight className="h-4 w-4 ml-2" />
-                        </Button>
-                      </Link>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
+
+      {/* Results */}
+      <section className="py-12 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-900">
+              {filteredProviders.length} Provider{filteredProviders.length !== 1 ? "s" : ""} Found
+            </h2>
+            <p className="text-gray-600">
+              Showing results for {selectedCategory} in {selectedArea}
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {filteredProviders.map((provider) => (
+              <Card key={provider.id} className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle className="text-xl">{provider.name}</CardTitle>
+                      <CardDescription className="flex items-center mt-2">
+                        <MapPin className="h-4 w-4 mr-1" />
+                        {provider.location}
+                      </CardDescription>
+                    </div>
+                    <Badge variant="secondary">{provider.type}</Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <Star className="h-5 w-5 text-yellow-400 fill-current" />
+                        <span className="ml-1 font-semibold text-lg">{provider.rating}</span>
+                        <span className="ml-1 text-gray-600">({provider.reviews} reviews)</span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      {provider.services.slice(0, 3).map((service) => (
+                        <Badge key={service} variant="outline" className="text-xs">
+                          {service}
+                        </Badge>
+                      ))}
+                      {provider.services.length > 3 && (
+                        <Badge variant="outline" className="text-xs">
+                          +{provider.services.length - 3} more
+                        </Badge>
+                      )}
+                    </div>
+
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Phone className="h-4 w-4 mr-2" />
+                      {provider.phone}
+                    </div>
+
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Clock className="h-4 w-4 mr-2" />
+                      {provider.hours}
+                    </div>
+
+                    <Link href={`/provider/${provider.id}`}>
+                      <Button className="w-full mt-2">
+                        View Details
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {filteredProviders.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-600 text-lg">No providers found matching your criteria.</p>
+              <Button
+                variant="outline"
+                className="mt-4 bg-transparent"
+                onClick={() => {
+                  setSearchQuery("")
+                  setSelectedCategory("All")
+                  setSelectedArea("All Areas")
+                }}
+              >
+                Clear Filters
+              </Button>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-12 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="text-gray-400 text-sm">&copy; 2025 Blantyre Health Hub. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   )
 }

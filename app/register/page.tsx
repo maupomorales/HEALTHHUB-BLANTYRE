@@ -8,28 +8,27 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Mail, User, PhoneIcon, MapPin, Check } from "lucide-react"
+import { Heart, Mail, CheckCircle } from "lucide-react"
 import Link from "next/link"
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
     phone: "",
-    area: "",
   })
   const [selectedInterests, setSelectedInterests] = useState<string[]>([])
   const [isSubmitted, setIsSubmitted] = useState(false)
 
-  const healthInterests = [
+  const interests = [
     "General Health Tips",
-    "Wellness & Nutrition",
+    "Child Health",
+    "Women's Health",
     "Mental Health",
+    "Nutrition & Diet",
+    "Fitness & Exercise",
     "Chronic Disease Management",
-    "Maternal & Child Health",
-    "Vaccinations & Immunizations",
-    "Emergency Preparedness",
-    "Dental Health",
+    "Preventive Care",
   ]
 
   const handleInterestToggle = (interest: string) => {
@@ -38,30 +37,25 @@ export default function RegisterPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission here
     setIsSubmitted(true)
   }
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-4">
         <Card className="max-w-md w-full">
           <CardHeader className="text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Check className="h-8 w-8 text-green-600" />
+            <div className="mx-auto mb-4 w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+              <CheckCircle className="h-10 w-10 text-green-600" />
             </div>
             <CardTitle className="text-2xl">Successfully Subscribed!</CardTitle>
-            <CardDescription>Thank you for joining Blantyre Health Hub</CardDescription>
+            <CardDescription>
+              Thank you for subscribing to Blantyre Health Hub. We'll send health updates and tips to your email.
+            </CardDescription>
           </CardHeader>
-          <CardContent className="text-center space-y-4">
-            <p className="text-gray-600">
-              You'll start receiving health updates and information based on your selected interests.
-            </p>
+          <CardContent>
             <Link href="/">
-              <Button className="w-full">
-                <Heart className="h-4 w-4 mr-2" />
-                Return to Home
-              </Button>
+              <Button className="w-full">Return to Home</Button>
             </Link>
           </CardContent>
         </Card>
@@ -85,171 +79,122 @@ export default function RegisterPage() {
               </div>
             </Link>
             <nav className="hidden md:flex space-x-8">
-              <Link href="/" className="text-gray-700 hover:text-blue-600 font-medium">
-                Home
-              </Link>
               <Link href="/search" className="text-gray-700 hover:text-blue-600 font-medium">
                 Find Providers
               </Link>
               <Link href="/emergency" className="text-gray-700 hover:text-blue-600 font-medium">
                 Emergency
               </Link>
+              <Link href="/register" className="text-blue-600 font-medium">
+                Subscribe
+              </Link>
             </nav>
           </div>
         </div>
       </header>
 
-      {/* Registration Form */}
+      {/* Registration Section */}
       <section className="py-12 px-4">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Mail className="h-8 w-8 text-white" />
+            <div className="mx-auto mb-4 w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+              <Mail className="h-8 w-8 text-blue-600" />
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Stay Connected</h1>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">Stay Informed About Your Health</h1>
             <p className="text-lg text-gray-600">
-              Subscribe to receive health tips, provider updates, and wellness information for Blantyre
+              Subscribe to receive health tips, provider updates, and wellness information tailored for Blantyre
+              residents.
             </p>
           </div>
 
           <Card>
             <CardHeader>
               <CardTitle>Subscribe to Health Updates</CardTitle>
-              <CardDescription>Fill in your information to get started</CardDescription>
+              <CardDescription>Fill in your details to receive personalized health information</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Personal Information */}
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="fullName">Full Name *</Label>
-                    <div className="relative mt-1">
-                      <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                      <Input
-                        id="fullName"
-                        type="text"
-                        placeholder="John Doe"
-                        className="pl-10"
-                        value={formData.fullName}
-                        onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="email">Email Address *</Label>
-                    <div className="relative mt-1">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="john@example.com"
-                        className="pl-10"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="phone">Phone Number</Label>
-                    <div className="relative mt-1">
-                      <PhoneIcon className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                      <Input
-                        id="phone"
-                        type="tel"
-                        placeholder="+265 XXX XXX XXX"
-                        className="pl-10"
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="area">Area of Residence</Label>
-                    <div className="relative mt-1">
-                      <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                      <Input
-                        id="area"
-                        type="text"
-                        placeholder="e.g., Blantyre City, Limbe"
-                        className="pl-10"
-                        value={formData.area}
-                        onChange={(e) => setFormData({ ...formData, area: e.target.value })}
-                      />
-                    </div>
-                  </div>
+                <div className="space-y-2">
+                  <Label htmlFor="name">Full Name</Label>
+                  <Input
+                    id="name"
+                    placeholder="Enter your full name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    required
+                  />
                 </div>
 
-                {/* Health Interests */}
-                <div>
-                  <Label className="mb-3 block">Health Topics of Interest</Label>
-                  <p className="text-sm text-gray-600 mb-3">Select the topics you'd like to receive updates about</p>
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email Address</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="your.email@example.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone Number (Optional)</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder="+265 xxx xxx xxx"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <Label>Health Topics of Interest</Label>
+                  <p className="text-sm text-gray-600">Select topics you'd like to receive updates about</p>
                   <div className="flex flex-wrap gap-2">
-                    {healthInterests.map((interest) => (
+                    {interests.map((interest) => (
                       <Badge
                         key={interest}
                         variant={selectedInterests.includes(interest) ? "default" : "outline"}
-                        className="cursor-pointer hover:bg-blue-100 transition-colors px-3 py-1"
+                        className="cursor-pointer"
                         onClick={() => handleInterestToggle(interest)}
                       >
-                        {selectedInterests.includes(interest) && <Check className="h-3 w-3 mr-1" />}
                         {interest}
                       </Badge>
                     ))}
                   </div>
                 </div>
 
-                {/* Submit Button */}
-                <div className="space-y-4">
-                  <Button type="submit" className="w-full" size="lg">
-                    Subscribe Now
-                  </Button>
-                  <p className="text-xs text-center text-gray-600">
-                    By subscribing, you agree to receive health-related emails. You can unsubscribe at any time.
-                  </p>
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h4 className="font-semibold text-gray-900 mb-2">What You'll Receive:</h4>
+                  <ul className="space-y-1 text-sm text-gray-700">
+                    <li>• Weekly health tips and wellness advice</li>
+                    <li>• Updates about new healthcare providers</li>
+                    <li>• Information about health campaigns</li>
+                    <li>• Emergency health alerts when needed</li>
+                  </ul>
                 </div>
+
+                <Button type="submit" className="w-full" size="lg">
+                  <Mail className="h-5 w-5 mr-2" />
+                  Subscribe to Health Updates
+                </Button>
+
+                <p className="text-xs text-gray-600 text-center">
+                  By subscribing, you agree to receive health updates and information. You can unsubscribe at any time.
+                </p>
               </form>
             </CardContent>
           </Card>
-
-          {/* Benefits */}
-          <div className="mt-8 grid md:grid-cols-3 gap-4">
-            <Card>
-              <CardContent className="pt-6 text-center">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Mail className="h-6 w-6 text-blue-600" />
-                </div>
-                <h3 className="font-semibold mb-1">Weekly Updates</h3>
-                <p className="text-sm text-gray-600">Get the latest health news and tips every week</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="pt-6 text-center">
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Heart className="h-6 w-6 text-green-600" />
-                </div>
-                <h3 className="font-semibold mb-1">Wellness Tips</h3>
-                <p className="text-sm text-gray-600">Personalized advice for your health journey</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="pt-6 text-center">
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <MapPin className="h-6 w-6 text-purple-600" />
-                </div>
-                <h3 className="font-semibold mb-1">Local Updates</h3>
-                <p className="text-sm text-gray-600">New providers and services in your area</p>
-              </CardContent>
-            </Card>
-          </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-12 px-4 mt-12">
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="text-gray-400 text-sm">&copy; 2025 Blantyre Health Hub. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   )
 }
