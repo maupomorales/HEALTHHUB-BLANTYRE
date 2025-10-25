@@ -4,8 +4,8 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: "Blantyre Health Hub - Your Healthcare Directory",
-  description: "Find trusted healthcare providers in Blantyre, Malawi",
+  title: "Blantyre Health Hub - Health Information & Blog",
+  description: "Your trusted source for health information, tips, and wellness articles in Blantyre, Malawi",
 }
 
 export default function RootLayout({ children }) {
